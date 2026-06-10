@@ -1061,7 +1061,10 @@ footer a { color: var(--muted); }
     var raw = c.whatsappNumber || CFG.whatsappNumber || "";
     var num = String(raw).replace(/\D/g, "");
     if (!num || /X/i.test(raw)) return "";
-    var pais = activeCountry ? (" en " + (activeCountry.label || activeCountry.id)) : "";
+    var pais = activeCountry
+      ? (" en " + (activeCountry.flag ? activeCountry.flag + " " : "") +
+         (activeCountry.label || activeCountry.id))
+      : "";
     var msg = "¡Hola! Quiero vender *" + p.title + "*" + pais +
       " (Catálogo Drop " + (CFG.storeName || "") + "). ¿Me das más información?";
     var href = "https://wa.me/" + num + "?text=" + encodeURIComponent(msg);

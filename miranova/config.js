@@ -38,13 +38,13 @@ window.CATALOG_CONFIG = {
   /* ---- Precio (vitrina de proveedor) ---- */
   showPrice: true,                 // muestra "Precio proveedor" y "Precio sugerido"
 
-  /* ---- Link de Boxville ---- */
-  // Cada producto puede traer su propio "boxville" en products.json.
-  // Mientras tanto, el botón apunta a este destino general:
+  /* ---- Link de Drop (botón dentro del detalle del producto) ---- */
+  // Cada producto trae su propio "boxville" (URL de su página en Drop).
+  // Si un producto no tiene link, el botón no se muestra. Sin fallback genérico.
   boxvilleSource: "metafield",     // se ignora en modo estático (se usa item.boxville)
-  boxvilleFallbackUrl: "https://boxville.com",
-  ctaText: "Conectar en Boxville",
-  showCta: false,                  // OCULTO por ahora (aún no hay links de Boxville)
+  boxvilleFallbackUrl: "",
+  ctaText: "Conectar en Drop",
+  showCta: true,                   // botón visible (solo en el detalle del producto)
 
   /* ---- Botón flotante de WhatsApp (consultas del catálogo) ---- */
   // Pon tu número con código de país, sin signos. Honduras = 504.

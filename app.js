@@ -358,19 +358,12 @@
     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
 
   function ctaHtml(p, big) {
-    // Permite ocultar el botón por completo (config.showCta === false),
-    // útil mientras no haya links de Boxville.
+    // El botón de redirección (a Drop) va SOLO dentro del detalle (big),
+    // nunca en la grilla, y solo si el producto tiene su propio link.
     if (CFG.showCta === false) return "";
-    var cls = big ? "sheet-cta" : "cta";
-    var label = escapeHtml(CFG.ctaText || "Conectar en Boxville");
-    if (!p.boxville) {
-      // Sin link → botón deshabilitado (oculto en tarjeta, visible-disabled en sheet).
-      if (big) {
-        return '<span class="' + cls + ' disabled">' + ICON_LINK + label + "</span>";
-      }
-      return '<button class="' + cls + ' disabled" hidden>' + label + "</button>";
-    }
-    return '<a class="' + cls + '" href="' + escapeHtml(p.boxville) +
+    if (!big || !p.boxville) return "";
+    var label = escapeHtml(CFG.ctaText || "Conectar en Drop");
+    return '<a class="sheet-cta" href="' + escapeHtml(p.boxville) +
       '" target="_blank" rel="noopener noreferrer">' + ICON_LINK + label + "</a>";
   }
 
@@ -442,7 +435,6 @@
       '  <div class="card-body">' +
       '    <div class="card-title" data-open="' + idx + '">' + escapeHtml(p.title) + "</div>" +
       priceHtml(p, false) +
-      ctaHtml(p, false) +
       "  </div>" +
       "</article>"
     );

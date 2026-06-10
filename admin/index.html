@@ -145,6 +145,8 @@
           <option value="hogar">Hogar y cocina</option>
           <option value="otros">Otros</option>
         </select>
+        <label>Link de Drop <span class="muted">(URL del producto en Drop)</span></label>
+        <input id="f-drop" type="url" inputmode="url" placeholder="https://app.soydrop.com/dropshipping/product/…" autocomplete="off" />
         <label>Foto del producto</label>
         <input id="f-img" type="file" accept="image/*" />
         <img id="f-preview" class="preview-img" hidden alt="" />
@@ -321,6 +323,7 @@
     $("f-title").value = p.title||""; $("f-desc").value = p.description||"";
     $("f-prov").value = p.providerPrice!=null?p.providerPrice:""; $("f-sug").value = p.suggestedPrice!=null?p.suggestedPrice:"";
     $("f-cat").value = p.category||"suplementos";
+    $("f-drop").value = p.boxville||"";
     $("f-img").value="";
     var prev=$("f-preview");
     if(p.image){ prev.src = SITE_IMG_BASE + p.image; prev.hidden=false; } else { prev.hidden=true; prev.src=""; }
@@ -348,6 +351,8 @@
       suggestedPrice: sug===""?null:Number(sug),
       currency: active.currency
     };
+    var drop = $("f-drop").value.trim();
+    if(drop) prod.boxville = drop;
     var existing = editIndex>=0 ? state[active.id].products[editIndex] : null;
     if(existing && existing.image) prod.image = existing.image;
 

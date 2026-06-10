@@ -1,0 +1,200 @@
+[
+  {
+    "title": "Gomitas de Shilajit 100% Puro del Himalaya — Pack de 30",
+    "description": "Shilajit en gomitas de fácil consumo. Apoya la energía, el enfoque y la vitalidad diaria con 85+ minerales y ácido fúlvico. Presentación premium lista para revender.",
+    "category": "suplementos",
+    "providerPrice": 319,
+    "suggestedPrice": 915,
+    "currency": "HNL",
+    "image": "data/images/gomitas-shilajit.jpg"
+  },
+  {
+    "title": "Gomitas de Vinagre de Manzana: Quema Grasa",
+    "description": "Gomitas de vinagre de manzana para apoyar el metabolismo y la digestión sin el sabor fuerte del líquido. Producto de alta rotación.",
+    "category": "suplementos",
+    "providerPrice": 239,
+    "suggestedPrice": 712,
+    "currency": "HNL",
+    "image": "data/images/gomitas-vinagre.jpg"
+  },
+  {
+    "title": "Champú de Romero Nutritivo y Regenerador",
+    "description": "Champú con extracto de romero que limpia, fortalece y estimula el cuero cabelludo. Ayuda a reducir la caída y aumenta la sensación de cabello sano.",
+    "category": "belleza",
+    "providerPrice": 219,
+    "suggestedPrice": 661,
+    "currency": "HNL",
+    "image": "data/images/champu-romero.jpg"
+  },
+  {
+    "title": "Cápsulas de Shilajit 100% Puro del Himalaya — 92 Minerales",
+    "description": "Shilajit en cápsulas con 92 minerales y ácido fúlvico. Apoya energía, resistencia y bienestar general. Formato cómodo y dosificado.",
+    "category": "suplementos",
+    "providerPrice": 260,
+    "suggestedPrice": 765,
+    "currency": "HNL",
+    "image": "data/images/capsulas-shilajit.jpg"
+  },
+  {
+    "title": "Cándida Cleanse — Fórmula Ayurvédica para la Salud Digestiva",
+    "description": "Fórmula ayurvédica de limpieza que apoya el equilibrio intestinal y una digestión saludable. Ingredientes de origen natural.",
+    "category": "suplementos",
+    "providerPrice": 254,
+    "suggestedPrice": 750,
+    "currency": "HNL",
+    "image": "data/images/candida-cleanse.jpg"
+  },
+  {
+    "title": "Aceite Batana 100% Puro con Romero y Maca — Nutritivo Capilar",
+    "description": "Aceite de batana puro enriquecido con romero y maca para nutrir, dar brillo y favorecer el crecimiento del cabello. Tratamiento capilar artesanal.",
+    "category": "belleza",
+    "providerPrice": 207,
+    "suggestedPrice": 631,
+    "currency": "HNL",
+    "image": "data/images/aceite-batana.jpg"
+  },
+  {
+    "title": "Óxido Nítrico en Cápsulas con Huanarpo Macho",
+    "description": "Potenciador de energía, rendimiento y circulación con óxido nítrico y huanarpo macho. Pensado para entrenamiento y vitalidad masculina.",
+    "category": "suplementos",
+    "providerPrice": 349,
+    "suggestedPrice": 991,
+    "currency": "HNL",
+    "image": "data/images/oxido-nitrico.jpg"
+  },
+  {
+    "title": "NAD Resveratrol — Cápsulas de Reparación Celular",
+    "description": "Combinación de NAD+ y resveratrol para apoyar la reparación celular, la longevidad y la energía sostenida. Suplemento antiedad de alto valor.",
+    "category": "suplementos",
+    "providerPrice": 399,
+    "suggestedPrice": 1118,
+    "currency": "HNL",
+    "image": "data/images/nad-resveratrol.jpg"
+  },
+  {
+    "title": "Turkesterone — Cápsulas de Ajuga Turkestánica",
+    "description": "Turkesterone extraído de Ajuga turkestanica para apoyar fuerza, masa muscular y recuperación. Favorito de quienes entrenan.",
+    "category": "suplementos",
+    "providerPrice": 249,
+    "suggestedPrice": 737,
+    "currency": "HNL",
+    "image": "data/images/turkesterone.jpg"
+  },
+  {
+    "title": "Multivitamínico de Ginseng y Maca: Energía Explosiva",
+    "description": "Multivitamínico con ginseng y maca para energía, claridad mental y deseo. Apoya el sistema inmune y el rendimiento diario.",
+    "category": "suplementos",
+    "providerPrice": 231,
+    "suggestedPrice": 692,
+    "currency": "HNL",
+    "image": "data/images/multivitaminico-ginseng.jpg"
+  },
+  {
+    "title": "TrueFem Balance — Cápsulas para el Equilibrio Hormonal",
+    "description": "Fórmula natural para la mujer que apoya el equilibrio hormonal y el bienestar a lo largo del ciclo. Sin azúcar.",
+    "category": "suplementos",
+    "providerPrice": 376,
+    "suggestedPrice": 1060,
+    "currency": "HNL",
+    "image": "data/images/truefem-balance.jpg"
+  },
+  {
+    "title": "Shilajit 100% Puro — Resina Fuente de Energía Vital del Himalaya",
+    "description": "Resina de shilajit pura del Himalaya con potencia, fuerza y resistencia. Presentación tradicional de máxima concentración.",
+    "category": "suplementos",
+    "providerPrice": 271,
+    "suggestedPrice": 793,
+    "currency": "HNL",
+    "image": "data/images/shilajit-resina.jpg"
+  },
+  {
+    "title": "Shampoo de Cebolla — Fortalecimiento Capilar",
+    "description": "Champú de cebolla con resultados visibles: 94% de usuarios reportan menos caída y más crecimiento. Fortalece y revitaliza el cabello.",
+    "category": "belleza",
+    "providerPrice": 240,
+    "suggestedPrice": 715,
+    "currency": "HNL",
+    "image": "data/images/shampoo-cebolla.jpg"
+  },
+  {
+    "title": "SUPER HUMAN Ethiopian Black Seed Oil — Aceite de Comino Negro",
+    "description": "Aceite puro de semilla negra etíope (comino negro). Apoya el sistema inmune, niveles de testosterona equilibrados y bienestar general.",
+    "category": "suplementos",
+    "providerPrice": 303,
+    "suggestedPrice": 875,
+    "currency": "HNL",
+    "image": "data/images/super-human-blackseed.jpg"
+  },
+  {
+    "title": "Saw Palmetto 500mg — Soporte para la Salud de la Próstata",
+    "description": "Saw palmetto natural que apoya la salud de la próstata, niveles hormonales equilibrados y el cuidado del cabello. Fórmula efectiva.",
+    "category": "suplementos",
+    "providerPrice": 332,
+    "suggestedPrice": 948,
+    "currency": "HNL",
+    "image": "data/images/saw-palmetto.jpg"
+  },
+  {
+    "title": "Oregano Oil 6000 — Aceite de Orégano Potencia Extrema",
+    "description": "Aceite de orégano 6000 con aceite de semilla negra. Soporte antiinflamatorio e inmune de potencia extrema.",
+    "category": "suplementos",
+    "providerPrice": 303,
+    "suggestedPrice": 875,
+    "currency": "HNL",
+    "image": "data/images/oregano-oil.jpg"
+  },
+  {
+    "title": "Nattokinase — Mejora de Circulación Arterial",
+    "description": "Nattokinase con vitamina K para apoyar la circulación, la salud cardiovascular y un flujo sanguíneo equilibrado.",
+    "category": "suplementos",
+    "providerPrice": 260,
+    "suggestedPrice": 765,
+    "currency": "HNL",
+    "image": "data/images/nattokinase.jpg"
+  },
+  {
+    "title": "NAD Mens Complex — Energía, Rendimiento y Vitalidad",
+    "description": "Complejo NAD+ liposomal con CoQ10, resveratrol, L-arginina y L-citrulina para energía, rendimiento y vitalidad masculina.",
+    "category": "suplementos",
+    "providerPrice": 303,
+    "suggestedPrice": 875,
+    "currency": "HNL",
+    "image": "data/images/nad-mens.jpg"
+  },
+  {
+    "title": "Magnesium Complex — Fórmula de Absorción",
+    "description": "8 formas de magnesio con máxima absorción para soporte muscular y óseo, sueño profundo, energía y bienestar total.",
+    "category": "suplementos",
+    "providerPrice": 254,
+    "suggestedPrice": 750,
+    "currency": "HNL",
+    "image": "data/images/magnesium-complex.jpg"
+  },
+  {
+    "title": "Liquid Chlorophyll — Clorofila Líquida Concentrada",
+    "description": "Clorofila líquida concentrada para detox, energía y piel radiante. Apoya la limpieza natural del organismo.",
+    "category": "suplementos",
+    "providerPrice": 256,
+    "suggestedPrice": 755,
+    "currency": "HNL",
+    "image": "data/images/liquid-chlorophyll.jpg"
+  },
+  {
+    "title": "Lemme Burn — Cápsulas para Activar el Metabolismo",
+    "description": "Cápsulas para activar el metabolismo y AMPK, ayudando a quemar grasa e impulsar la energía. Producto de tendencia.",
+    "category": "suplementos",
+    "providerPrice": 303,
+    "suggestedPrice": 875,
+    "currency": "HNL",
+    "image": "data/images/lemme-burn.jpg"
+  },
+  {
+    "title": "King Maker — Masculinidad Máxima, 120 cápsulas",
+    "description": "Fórmula de masculinidad máxima con 120 cápsulas para fuerza, energía y confianza. Apoya el rendimiento y la vitalidad.",
+    "category": "suplementos",
+    "providerPrice": 302,
+    "suggestedPrice": 872,
+    "currency": "HNL",
+    "image": "data/images/king-maker.jpg"
+  }
+]

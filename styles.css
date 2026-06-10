@@ -136,6 +136,38 @@ a { color: inherit; }
   box-shadow: 0 0 0 4px rgba(21, 24, 29, .05);
 }
 
+/* Taps de país */
+.country-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 9px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.country-tabs::-webkit-scrollbar { display: none; }
+.country-tab {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  border-radius: 11px;
+  padding: 7px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.country-tab .flag { font-size: 16px; line-height: 1; }
+.country-tab[aria-pressed="true"] {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
 /* Chips de categorías */
 .chips {
   display: flex;

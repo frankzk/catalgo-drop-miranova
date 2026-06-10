@@ -99,6 +99,8 @@
   var ALL = [];          // todos los productos normalizados y visibles
   var activeCategory = "todos";
   var searchTerm = "";
+  var activeCountry = null;          // país activo (si CFG.countries)
+  var activeCurrency = CFG.currency; // moneda vigente (cambia por país)
 
   /* --------------------------- Query Shopify ----------------------------- */
   // Construye la query. `withQty` controla si incluimos quantityAvailable
@@ -311,7 +313,7 @@
     if (!imgs.length && CFG.placeholderImages) {
       imgs = [{ url: placeholderImage(item.title), altText: item.title }];
     }
-    var cur = item.currency || CFG.currency || "USD";
+    var cur = item.currency || activeCurrency || CFG.currency || "USD";
     return {
       id: item.id || ("static-" + idx),
       handle: item.handle || "",
@@ -576,6 +578,20 @@
       if (ALL[idx]) openSheet(ALL[idx]);
     });
 
+    // Taps de país.
+    if (elCountries) {
+      elCountries.addEventListener("click", function (e) {
+        var b = e.target.closest(".country-tab");
+        if (!b) return;
+        var id = b.getAttribute("data-country");
+        if (activeCountry && id === activeCountry.id) return;
+        var cs = countriesList() || [];
+        for (var i = 0; i < cs.length; i++) {
+          if (cs[i].id === id) { selectCountry(cs[i]); break; }
+        }
+      });
+    }
+
     // Chips de categoría.
     elChips.addEventListener("click", function (e) {
       var c = e.target.closest(".chip");
@@ -612,15 +628,71 @@
   function renderWhatsApp() {
     var fab = document.getElementById("wa-fab");
     if (!fab) return;
-    var raw = CFG.whatsappNumber || "";
+    // El país activo puede sobrescribir número/mensaje; si no, usa el global.
+    var c = activeCountry || {};
+    var raw = c.whatsappNumber || CFG.whatsappNumber || "";
     var num = String(raw).replace(/\D/g, "");        // solo dígitos (intl, sin +)
     if (!num || /X/i.test(raw)) { fab.hidden = true; return; }
     var msg = encodeURIComponent(
-      CFG.whatsappMessage || "Hola, vi el catálogo y quiero más información.");
+      c.whatsappMessage || CFG.whatsappMessage ||
+      "Hola, vi el catálogo y quiero más información.");
     fab.href = "https://wa.me/" + num + "?text=" + msg;
     fab.hidden = false;
     var label = fab.querySelector(".wa-label");
     if (label) label.textContent = CFG.whatsappLabel || "Consultas";
+  }
+
+  /* ----------------------- Taps de país (catálogo x país) ---------------- */
+  var elCountries = document.getElementById("country-tabs");
+
+  function countriesList() {
+    return (Array.isArray(CFG.countries) && CFG.countries.length) ? CFG.countries : null;
+  }
+
+  function renderCountryTabs() {
+    var cs = countriesList();
+    if (!elCountries || !cs) { if (elCountries) elCountries.hidden = true; return; }
+    elCountries.hidden = false;
+    elCountries.innerHTML = cs.map(function (c) {
+      var on = activeCountry && c.id === activeCountry.id;
+      return '<button class="country-tab" data-country="' + escapeHtml(c.id) +
+        '" aria-pressed="' + (on ? "true" : "false") + '">' +
+        (c.flag ? '<span class="flag">' + escapeHtml(c.flag) + "</span>" : "") +
+        escapeHtml(c.label || c.id) + "</button>";
+    }).join("");
+  }
+
+  // Cambia de país: actualiza moneda, WhatsApp y recarga sus productos.
+  function selectCountry(c) {
+    activeCountry = c;
+    activeCurrency = c.currency || CFG.currency;
+    activeCategory = "todos";
+    searchTerm = "";
+    var search = document.getElementById("search");
+    if (search) search.value = "";
+    renderCountryTabs();
+    renderWhatsApp();
+    elStatus.hidden = false;
+    elStatus.className = "status";
+    elStatus.innerHTML = '<div class="spinner"></div>Cargando productos…';
+    elGrid.innerHTML = "";
+    elChips.innerHTML = "";
+
+    if (Array.isArray(c.products)) {            // datos embebidos (preview)
+      finishLoad(c.products.map(normalizeStatic));
+      return;
+    }
+    var path = c.productsPath;
+    fetch(path, { cache: "no-cache" })
+      .then(function (r) {
+        if (!r.ok) throw new Error("No se pudo leer " + path + " (" + r.status + ")");
+        return r.json();
+      })
+      .then(function (items) {
+        if (!Array.isArray(items)) items = (items && items.products) || [];
+        finishLoad(items.map(normalizeStatic));
+      })
+      .catch(loadError);
   }
 
   /* ------------------------------- Cabecera ------------------------------ */
@@ -676,8 +748,14 @@
     ALL = withImg.concat(noImg);
 
     if (!ALL.length) {
+      elStatus.hidden = false;
       elStatus.className = "status";
-      elStatus.textContent = "No hay productos disponibles por ahora.";
+      elStatus.textContent = activeCountry
+        ? ("Catálogo de " + (activeCountry.label || activeCountry.id) +
+           " en preparación. ¡Pronto disponible!")
+        : "No hay productos disponibles por ahora.";
+      elChips.innerHTML = "";
+      elGrid.innerHTML = "";
       return;
     }
     renderChips();
@@ -694,6 +772,13 @@
 
   // Modo estático: lee productos desde un JSON local (sin Shopify).
   function startStatic() {
+    // Catálogo por país: si hay CFG.countries, arrancamos con el primero.
+    var cs = countriesList();
+    if (cs) {
+      renderCountryTabs();
+      selectCountry(activeCountry || cs[0]);
+      return;
+    }
     // Si los productos vienen embebidos en config (CFG.products), úsalos
     // directamente: permite un único archivo HTML autónomo (sin fetch).
     if (Array.isArray(CFG.products)) {

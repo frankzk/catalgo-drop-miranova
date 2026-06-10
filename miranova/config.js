@@ -21,9 +21,18 @@ window.CATALOG_CONFIG = {
 
   /* ---- Fuente de productos (estático, sin Shopify) ---- */
   productsSource: "static",
-  productsPath: "data/products.json",
   placeholderImages: true,         // miniaturas generadas mientras no haya fotos reales
-  currency: "HNL",                 // Lempira hondureña (L)
+  currency: "HNL",                 // moneda por defecto
+
+  /* ---- Catálogo por país (taps en la cabecera) ----
+     Cada país tiene su propia lista (productsPath), su moneda y, si quieres,
+     su propio WhatsApp (whatsappNumber/whatsappMessage). Al tocar un tap se
+     cambia el catálogo en la misma página. Quita este bloque para un solo país. */
+  countries: [
+    { id: "honduras",   label: "Honduras",   flag: "🇭🇳", currency: "HNL", productsPath: "data/honduras.json" },
+    { id: "costa-rica", label: "Costa Rica", flag: "🇨🇷", currency: "CRC", productsPath: "data/costa-rica.json" },
+    { id: "guatemala",  label: "Guatemala",  flag: "🇬🇹", currency: "GTQ", productsPath: "data/guatemala.json" }
+  ],
 
   /* ---- Precio (vitrina de proveedor) ---- */
   showPrice: true,                 // muestra "Precio proveedor" y "Precio sugerido"

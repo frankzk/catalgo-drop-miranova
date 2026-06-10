@@ -303,6 +303,8 @@
   // Cache-busting para imágenes locales (no aplica a data: URIs del preview).
   function bustUrl(u) {
     if (!u || /^data:/.test(u)) return u;
+    // El panel /admin puede guardar la ruta con "/" inicial; la hacemos relativa.
+    if (u.charAt(0) === "/" && u.charAt(1) !== "/") u = u.slice(1);
     var v = CFG.imageVersion;
     return v ? (u + (u.indexOf("?") > -1 ? "&" : "?") + "v=" + v) : u;
   }

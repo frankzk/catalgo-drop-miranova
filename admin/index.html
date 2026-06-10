@@ -66,6 +66,10 @@
   .row .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .cat{display:inline-block;background:#f0f1f4;color:#555;border-radius:999px;
        padding:2px 9px;font-size:11px;font-weight:700}
+  .drop-link{display:inline-block;color:#1d6ad6;font-weight:700;font-size:11.5px;text-decoration:none;
+       background:#eaf2fe;border-radius:999px;padding:2px 9px}
+  .drop-link:hover{text-decoration:underline}
+  .drop-missing{font-size:11px;color:#b98900;background:#fff4d6;border-radius:999px;padding:2px 9px;font-weight:700}
   /* Modal de confirmación */
   .modal-backdrop{position:fixed;inset:0;background:rgba(8,10,14,.5);z-index:60;
        display:flex;align-items:center;justify-content:center;padding:20px}
@@ -300,7 +304,9 @@
       return '<div class="row">'+
         (img?'<img src="'+img+'" alt="" onerror="this.style.visibility=\'hidden\'">':'<div style="width:60px;height:60px;border-radius:10px;background:#eee;flex:0 0 auto"></div>')+
         '<div class="info"><div class="name">'+esc(p.title||"(sin título)")+'</div>'+
-        '<div class="meta">'+cat+'<span>'+esc(fmt(p.providerPrice,active.sym))+' → '+esc(fmt(p.suggestedPrice,active.sym))+'</span></div></div>'+
+        '<div class="meta">'+cat+'<span>'+esc(fmt(p.providerPrice,active.sym))+' → '+esc(fmt(p.suggestedPrice,active.sym))+'</span>'+
+          (p.boxville?'<a class="drop-link" href="'+esc(p.boxville)+'" target="_blank" rel="noopener">🔗 Ver en Drop</a>':'<span class="drop-missing">sin link de Drop</span>')+
+        '</div></div>'+
         '<div class="acts">'+
           '<button class="icon-btn" data-edit="'+i+'">Editar</button>'+
           '<button class="icon-btn" data-del="'+i+'" aria-label="Eliminar">🗑</button>'+

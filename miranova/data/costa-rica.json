@@ -7,7 +7,8 @@
       "providerPrice": 7531,
       "suggestedPrice": 18832.5,
       "currency": "CRC",
-      "image": "data/images/cr-yerba-magic.jpg"
+      "image": "data/images/cr-yerba-magic.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a27a4b0636cbc905af2abdb"
     },
     {
       "title": "Cápsulas de Shilajit 100% Puro del Himalaya — 92 Minerales (30 cáps.)",
@@ -16,7 +17,8 @@
       "providerPrice": 5490,
       "suggestedPrice": 13730,
       "currency": "CRC",
-      "image": "data/images/cr-shilajit-92.jpg"
+      "image": "data/images/cr-shilajit-92.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a274ac8636cbc905af2a888"
     },
     {
       "title": "Parches Kinoki: Desintoxicación Plantar (10 Detox Pads)",
@@ -35,7 +37,8 @@
       "providerPrice": 3475,
       "suggestedPrice": 8692.5,
       "currency": "CRC",
-      "image": "data/images/cr-nail-fungal.jpg"
+      "image": "data/images/cr-nail-fungal.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a27521f636cbc905af2a8f2"
     },
     {
       "title": "Shampoo en Barra Polygonum para Oscurecer el Cabello (Set de 2)",
@@ -44,7 +47,8 @@
       "providerPrice": 3364,
       "suggestedPrice": 8415,
       "currency": "CRC",
-      "image": "data/images/cr-shampoo-polygonum.jpg"
+      "image": "data/images/cr-shampoo-polygonum.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2779aa636cbc905af2aaa3"
     },
     {
       "title": "Shampoo Max Shine: Tinte Instantáneo y Cobertura de Canas (10 sachets)",
@@ -53,7 +57,8 @@
       "providerPrice": 4475,
       "suggestedPrice": 11192.5,
       "currency": "CRC",
-      "image": "data/images/cr-shampoo-maxshine.jpg"
+      "image": "data/images/cr-shampoo-maxshine.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a27a00e636cbc905af2abc8"
     },
     {
       "title": "Crema Depilatoria Corporal Suave y Sin Irritación (Cuerpo y Rostro)",
@@ -62,7 +67,8 @@
       "providerPrice": 2825,
       "suggestedPrice": 7067.5,
       "currency": "CRC",
-      "image": "data/images/cr-crema-depilatoria.jpg"
+      "image": "data/images/cr-crema-depilatoria.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a279eb3636cbc905af2abc2"
     },
     {
       "title": "Exfoliante Therapy Foot 532 ml: Elimina Durezas y Revitaliza Manos y Pies",
@@ -71,7 +77,8 @@
       "providerPrice": 3325,
       "suggestedPrice": 8317.5,
       "currency": "CRC",
-      "image": "data/images/cr-exfoliante-foot.jpg"
+      "image": "data/images/cr-exfoliante-foot.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a279a81636cbc905af2abab"
     },
     {
       "title": "Cámara de Seguridad WiFi: Tipo Foco con Visión 360°",
@@ -80,7 +87,8 @@
       "providerPrice": 8875,
       "suggestedPrice": 22192.5,
       "currency": "CRC",
-      "image": "data/images/cr-camara-wifi.jpg"
+      "image": "data/images/cr-camara-wifi.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a27a5d2636cbc905af2abe3"
     },
     {
       "title": "Bulby: Bombilla / Lámpara Solar Plegable",
@@ -89,7 +97,8 @@
       "providerPrice": 5525,
       "suggestedPrice": 13817.5,
       "currency": "CRC",
-      "image": "data/images/cr-bulby-solar.jpg"
+      "image": "data/images/cr-bulby-solar.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a277bc7636cbc905af2aabc"
     },
     {
       "title": "Soporte Celular Giratorio 360°: Montaje para Tablero y Parabrisas",
@@ -98,7 +107,8 @@
       "providerPrice": 3475,
       "suggestedPrice": 8692.5,
       "currency": "CRC",
-      "image": "data/images/cr-soporte-celular.jpg"
+      "image": "data/images/cr-soporte-celular.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2785bc636cbc905af2ab05"
     }
   ]
 }

@@ -663,7 +663,7 @@
   function loadBoxvilleList() {
     if (CFG.boxvilleSource !== "list") return Promise.resolve();
     var path = CFG.boxvilleListPath || "data/boxville.json";
-    return fetch(path)
+    return fetch(path, { cache: "no-cache" })
       .then(function (r) { return r.ok ? r.json() : {}; })
       .then(function (map) { window.BOXVILLE_LIST = map || {}; })
       .catch(function () { window.BOXVILLE_LIST = {}; });
@@ -701,7 +701,9 @@
       return;
     }
     var path = CFG.productsPath || "data/products.json";
-    fetch(path)
+    // no-cache: revalida siempre el JSON de datos (evita servir una versión
+    // vieja cacheada cuando agregamos/cambiamos productos o imágenes).
+    fetch(path, { cache: "no-cache" })
       .then(function (r) {
         if (!r.ok) throw new Error("No se pudo leer " + path + " (" + r.status + ")");
         return r.json();

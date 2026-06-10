@@ -15,8 +15,8 @@ window.CATALOG_CONFIG = {
   storeName: "MIRANOVA",
   pageTitle: "Catálogo Drop Miranova · Honduras",
   brandAvatar: "",                 // URL de logo redondo (opcional). Vacío = inicial.
-  headline: "Catálogo Drop Miranova · Honduras",
-  tagline: "Productos para que los vendas en tu tienda",
+  headline: "",                    // vacío = cabecera más compacta (sin titular extra)
+  tagline: "",
   subtitle: "Proveedor dropshipping · Honduras",
 
   /* ---- Fuente de productos (estático, sin Shopify) ---- */
@@ -34,6 +34,7 @@ window.CATALOG_CONFIG = {
   boxvilleSource: "metafield",     // se ignora en modo estático (se usa item.boxville)
   boxvilleFallbackUrl: "https://boxville.com",
   ctaText: "Conectar en Boxville",
+  showCta: false,                  // OCULTO por ahora (aún no hay links de Boxville)
 
   /* ---- Botón flotante de WhatsApp (consultas del catálogo) ---- */
   // Pon tu número con código de país, sin signos. Honduras = 504.

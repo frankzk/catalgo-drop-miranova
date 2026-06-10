@@ -54,6 +54,28 @@
   .bar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
   .bar .count{color:var(--muted);font-size:13px;font-weight:600}
   a.link{color:var(--pink)}
+
+  /* Branding del header */
+  .brand-mini{display:flex;align-items:center;gap:9px;min-width:0}
+  .logo{width:30px;height:30px;border-radius:8px;background:var(--accent);color:var(--pink);
+        display:grid;place-items:center;font-weight:800;font-size:16px;flex:0 0 auto}
+  header a.btn{text-decoration:none}
+  /* Buscador */
+  .admin-search{margin-bottom:14px}
+  /* Chip de categoría en cada fila */
+  .row .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cat{display:inline-block;background:#f0f1f4;color:#555;border-radius:999px;
+       padding:2px 9px;font-size:11px;font-weight:700}
+  /* Modal de confirmación */
+  .modal-backdrop{position:fixed;inset:0;background:rgba(8,10,14,.5);z-index:60;
+       display:flex;align-items:center;justify-content:center;padding:20px}
+  .modal{background:#fff;border-radius:18px;max-width:380px;width:100%;padding:22px;text-align:center;
+       box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .modal-icon{font-size:34px}
+  .modal h3{margin:8px 0 4px;font-size:18px}
+  .modal .modal-actions{display:flex;gap:10px;margin-top:18px}
+  .modal .modal-actions .btn{flex:1}
+  .btn-del-confirm{background:#dc2626;color:#fff;border:none}
 </style>
 </head>
 <body>
@@ -75,8 +97,12 @@
 <!-- APP -->
 <div id="app" hidden>
   <header>
-    <span class="title">🛍️ Panel del catálogo</span>
+    <div class="brand-mini">
+      <span class="logo">M</span>
+      <span class="title">Panel del catálogo</span>
+    </div>
     <span class="spacer"></span>
+    <a class="btn btn-ghost" href="../miranova/" target="_blank" rel="noopener">Ver catálogo ↗</a>
     <button class="btn btn-ghost" id="logout">Salir</button>
   </header>
   <main>
@@ -89,6 +115,7 @@
         <span class="spacer" style="flex:1"></span>
         <span class="count" id="count"></span>
       </div>
+      <input id="search" class="admin-search" type="search" placeholder="🔎 Buscar producto…" autocomplete="off" />
       <div id="list"></div>
     </section>
 
@@ -133,6 +160,20 @@
   </main>
 </div>
 
+<!-- Modal de confirmación de borrado (2 pasos) -->
+<div class="modal-backdrop" id="del-modal" hidden>
+  <div class="modal" role="alertdialog" aria-modal="true">
+    <div class="modal-icon">🗑️</div>
+    <h3>¿Eliminar este producto?</h3>
+    <p class="muted" id="del-name" style="margin:4px 0 0"></p>
+    <p class="muted" style="margin:8px 0 0">Esta acción no se puede deshacer.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="del-cancel">Cancelar</button>
+      <button class="btn btn-del-confirm" id="del-confirm">Sí, eliminar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============================================================================
    Panel de administración del Catálogo Drop Miranova.
@@ -153,10 +194,13 @@
   var API = "https://api.github.com/repos/" + REPO;
   var SITE_IMG_BASE = "../miranova/";  // para previsualizar imágenes existentes desde /admin
 
+  var CAT_LABELS = { suplementos:"Suplementos", belleza:"Belleza", hogar:"Hogar y cocina", otros:"Otros" };
   var token = localStorage.getItem("miranova_token") || "";
   var active = COUNTRIES[0];
   var state = {};  // por país: { products, sha }
   var editIndex = -1;
+  var delIndex = -1;
+  var searchTerm = "";
   var pendingImageDataUrl = null;
 
   var $ = function(id){ return document.getElementById(id); };
@@ -236,15 +280,22 @@
     var ps = st.products || [];
     $("count").textContent = ps.length + (ps.length===1?" producto":" productos");
     if(!ps.length){ $("list").innerHTML = '<p class="muted">Aún no hay productos en '+active.label+'. Toca “Agregar producto”.</p>'; return; }
-    $("list").innerHTML = ps.map(function(p,i){
+    // Filtro de búsqueda (mantiene el índice real con data-edit/data-del)
+    var q = searchTerm.toLowerCase();
+    var rows = ps.map(function(p,i){ return { p:p, i:i }; })
+      .filter(function(o){ return !q || (o.p.title||"").toLowerCase().indexOf(q) !== -1; });
+    if(!rows.length){ $("list").innerHTML = '<p class="muted">No hay productos que coincidan con la búsqueda.</p>'; return; }
+    $("list").innerHTML = rows.map(function(o){
+      var p=o.p, i=o.i;
       var img = p.image ? (SITE_IMG_BASE + p.image) : "";
+      var cat = p.category ? '<span class="cat">'+esc(CAT_LABELS[p.category]||p.category)+'</span>' : "";
       return '<div class="row">'+
         (img?'<img src="'+img+'" alt="" onerror="this.style.visibility=\'hidden\'">':'<div style="width:60px;height:60px;border-radius:10px;background:#eee;flex:0 0 auto"></div>')+
         '<div class="info"><div class="name">'+esc(p.title||"(sin título)")+'</div>'+
-        '<div class="meta">'+esc(fmt(p.providerPrice,active.sym))+' → '+esc(fmt(p.suggestedPrice,active.sym))+'</div></div>'+
+        '<div class="meta">'+cat+'<span>'+esc(fmt(p.providerPrice,active.sym))+' → '+esc(fmt(p.suggestedPrice,active.sym))+'</span></div></div>'+
         '<div class="acts">'+
           '<button class="icon-btn" data-edit="'+i+'">Editar</button>'+
-          '<button class="icon-btn" data-del="'+i+'">🗑</button>'+
+          '<button class="icon-btn" data-del="'+i+'" aria-label="Eliminar">🗑</button>'+
         '</div></div>';
     }).join("");
   }
@@ -302,6 +353,8 @@
 
     var imgFile = $("f-img").files[0];
     showLoading(true);
+    var saveBtn = $("save-btn"); saveBtn.disabled = true; saveBtn.textContent = "Guardando…";
+    function doneSaving(){ saveBtn.disabled = false; saveBtn.textContent = "Guardar"; }
 
     var step = Promise.resolve();
     if(imgFile){
@@ -323,16 +376,27 @@
         st.products = products; st.sha = resp.content.sha;
       });
     }).then(function(){
-      showLoading(false); closeForm(); renderList();
+      doneSaving(); showLoading(false); closeForm(); renderList();
       toast("✅ Guardado. El catálogo se actualiza en ~1 minuto.");
-    }).catch(function(e){ showLoading(false); alert("Error: "+e.message); });
+    }).catch(function(e){ doneSaving(); showLoading(false); alert("Error: "+e.message); });
   }
 
-  function del(index){
+  // Paso 1: abrir el popup de confirmación (no borra nada todavía).
+  function askDelete(index){
+    delIndex = index;
     var p = state[active.id].products[index];
-    if(!confirm("¿Eliminar “"+(p.title||"este producto")+"”?")) return;
-    showLoading(true);
+    $("del-name").textContent = "“" + (p.title || "este producto") + "”";
+    $("del-modal").hidden = false;
+  }
+  function closeDelModal(){ $("del-modal").hidden = true; delIndex = -1; }
+
+  // Paso 2: confirmar -> borrar de verdad.
+  function confirmDelete(){
+    if(delIndex < 0) return;
+    var index = delIndex; closeDelModal();
     var st = state[active.id];
+    var p = st.products[index];
+    showLoading(true);
     var products = st.products.slice(); products.splice(index,1);
     var contentStr = JSON.stringify({ products: products }, null, 2) + "\n";
     putFile(active.file, contentStr, st.sha, "admin: eliminar "+(p.title||"producto")+" ("+active.id+")").then(function(resp){
@@ -369,6 +433,7 @@
     var b=e.target.closest(".tab"); if(!b) return;
     var id=b.getAttribute("data-id"); if(id===active.id) return;
     active = COUNTRIES.filter(function(c){return c.id===id;})[0];
+    searchTerm=""; if($("search")) $("search").value="";
     renderTabs(); closeForm(); loadCountry();
   });
   $("add-btn").addEventListener("click", function(){ openForm(null); });
@@ -376,8 +441,15 @@
   $("save-btn").addEventListener("click", save);
   $("list").addEventListener("click", function(e){
     var ed=e.target.closest("[data-edit]"); if(ed){ openForm(parseInt(ed.getAttribute("data-edit"),10)); return; }
-    var dl=e.target.closest("[data-del]"); if(dl){ del(parseInt(dl.getAttribute("data-del"),10)); }
+    var dl=e.target.closest("[data-del]"); if(dl){ askDelete(parseInt(dl.getAttribute("data-del"),10)); }
   });
+  // Modal de borrado (2 pasos)
+  $("del-cancel").addEventListener("click", closeDelModal);
+  $("del-confirm").addEventListener("click", confirmDelete);
+  $("del-modal").addEventListener("click", function(e){ if(e.target===this) closeDelModal(); });
+  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && !$("del-modal").hidden) closeDelModal(); });
+  // Buscador
+  $("search").addEventListener("input", function(){ searchTerm=this.value.trim(); renderList(); });
   $("f-img").addEventListener("change", function(){
     var f=this.files[0], prev=$("f-preview");
     if(f){ prev.src=URL.createObjectURL(f); prev.hidden=false; }

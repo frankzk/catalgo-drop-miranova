@@ -1093,10 +1093,7 @@ footer a { color: var(--muted); }
       : '<div class="no-img">Sin imagen</div>';
     return (
       '<article class="card" data-idx="' + idx + '">' +
-      '  <div class="card-media" data-open="' + idx + '">' + img +
-      '    <button class="share-btn" data-share="' + idx + '" aria-label="Compartir producto">' +
-           ICON_SHARE + "</button>" +
-      "  </div>" +
+      '  <div class="card-media" data-open="' + idx + '">' + img + "</div>" +
       '  <div class="card-body">' +
       '    <div class="card-title" data-open="' + idx + '">' + escapeHtml(p.title) + "</div>" +
       priceHtml(p, false) +

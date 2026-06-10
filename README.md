@@ -183,6 +183,19 @@ window.CATALOG_CONFIG = {
 };
 ```
 
+### Botón flotante de WhatsApp
+
+Para atender consultas del catálogo, configura tu número (formato internacional
+con código de país, **sin** signos; Honduras = `504`):
+
+```js
+whatsappNumber: "50499998888",
+whatsappLabel: "Consultas",
+whatsappMessage: "¡Hola! Vi el catálogo y quiero más información."
+```
+
+Si `whatsappNumber` queda vacío o contiene `X`, el botón **no se muestra**.
+
 ### Precio (opcional)
 Con `showPrice: true` se muestra el precio como **entero con separador de miles con
 punto** y símbolo según el `currencyCode` de Shopify

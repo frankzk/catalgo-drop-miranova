@@ -605,9 +605,25 @@
     wireSwipeToClose();
   }
 
+  /* --------------------- Botón flotante de WhatsApp ---------------------- */
+  function renderWhatsApp() {
+    var fab = document.getElementById("wa-fab");
+    if (!fab) return;
+    var raw = CFG.whatsappNumber || "";
+    var num = String(raw).replace(/\D/g, "");        // solo dígitos (intl, sin +)
+    if (!num || /X/i.test(raw)) { fab.hidden = true; return; }
+    var msg = encodeURIComponent(
+      CFG.whatsappMessage || "Hola, vi el catálogo y quiero más información.");
+    fab.href = "https://wa.me/" + num + "?text=" + msg;
+    fab.hidden = false;
+    var label = fab.querySelector(".wa-label");
+    if (label) label.textContent = CFG.whatsappLabel || "Consultas";
+  }
+
   /* ------------------------------- Cabecera ------------------------------ */
   function renderHeader() {
-    if (CFG.storeName) document.title = CFG.storeName + " — Catálogo proveedor";
+    document.title = CFG.pageTitle ||
+      ((CFG.storeName || "Catálogo") + " — Catálogo proveedor");
 
     var nameEl = document.getElementById("brand-name");
     var subEl = document.getElementById("brand-sub");
@@ -714,6 +730,7 @@
   /* -------------------------------- Init --------------------------------- */
   function start() {
     renderHeader();
+    renderWhatsApp();
     wireEvents();
     if (CFG.productsSource === "static") startStatic();
     else startShopify();

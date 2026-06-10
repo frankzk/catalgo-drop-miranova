@@ -4,9 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
   <meta name="theme-color" content="#f6f7f9" />
-  <title>Catálogo proveedor</title>
-  <meta name="description" content="Catálogo proveedor / vitrina de dropshipping. Conecta cada producto en Boxville." />
-  <link rel="stylesheet" href="../styles.css?v=6" />
+  <title>Catálogo Drop Miranova</title>
+  <meta name="description" content="Catálogo Drop Miranova — proveedor dropshipping. Productos para revender en Honduras, Costa Rica y Guatemala." />
+
+  <!-- Vista previa al compartir (WhatsApp / redes) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Catálogo Drop Miranova" />
+  <meta property="og:description" content="Proveedor dropshipping · Honduras · Costa Rica · Guatemala. Productos para revender en tu tienda." />
+  <meta property="og:image" content="https://frankzk.github.io/catalgo-drop-miranova/miranova/og-image.jpg?v=1" />
+  <meta property="og:url" content="https://frankzk.github.io/catalgo-drop-miranova/miranova/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Catálogo Drop Miranova" />
+  <meta name="twitter:description" content="Proveedor dropshipping · Honduras · Costa Rica · Guatemala." />
+  <meta name="twitter:image" content="https://frankzk.github.io/catalgo-drop-miranova/miranova/og-image.jpg?v=1" />
+
+  <link rel="icon" type="image/png" href="../favicon.png?v=1" />
+  <link rel="apple-touch-icon" href="../favicon.png?v=1" />
+  <link rel="stylesheet" href="../styles.css?v=8" />
 </head>
 <body>
   <header class="site-header">
@@ -33,6 +47,7 @@
   </header>
 
   <main>
+    <div class="result-count" id="result-count" hidden></div>
     <div class="status" id="status">
       <div class="spinner"></div>
       Cargando productos…
@@ -61,6 +76,6 @@
   </aside>
 
   <script src="config.js?v=7"></script>
-  <script src="../app.js?v=7"></script>
+  <script src="../app.js?v=8"></script>
 </body>
 </html>

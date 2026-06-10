@@ -367,17 +367,30 @@
 
   function priceHtml(p, big) {
     if (!CFG.showPrice) return "";
-    // Modo proveedor: muestra "Precio proveedor" y, opcional, "Precio sugerido".
+    // Modo proveedor: muestra "Precio proveedor", "Precio sugerido" y "Ganancia".
     if (p.providerPrice) {
-      var prov = formatPrice(p.providerPrice.amount, p.providerPrice.currencyCode);
-      var sug = p.suggestedPrice
-        ? formatPrice(p.suggestedPrice.amount, p.suggestedPrice.currencyCode) : "";
+      var cur = p.providerPrice.currencyCode;
+      var prov = formatPrice(p.providerPrice.amount, cur);
+      var sug = p.suggestedPrice ? formatPrice(p.suggestedPrice.amount, cur) : "";
       var cls = big ? "sheet-pricebox" : "card-pricebox";
+      var profitRow = "";
+      if (CFG.showProfit !== false && p.suggestedPrice) {
+        var pa = parseFloat(p.providerPrice.amount) || 0;
+        var sa = parseFloat(p.suggestedPrice.amount) || 0;
+        if (pa > 0 && sa > pa) {
+          var pct = Math.round((sa / pa - 1) * 100);
+          var gain = formatPrice(sa - pa, cur);
+          profitRow = '<div class="price-row price-profit-row">' +
+            '<span class="price-label">Ganancia <b>+' + pct + '%</b></span>' +
+            '<span class="price-profit">' + escapeHtml(gain) + '</span></div>';
+        }
+      }
       return '<div class="' + cls + '">' +
         '<div class="price-row"><span class="price-label">Precio proveedor</span>' +
         '<span class="price-prov">' + escapeHtml(prov) + '</span></div>' +
         (sug ? '<div class="price-row"><span class="price-label">Precio sugerido</span>' +
           '<span class="price-sug">' + escapeHtml(sug) + '</span></div>' : "") +
+        profitRow +
         "</div>";
     }
     if (!p.price) return "";
@@ -386,6 +399,34 @@
       escapeHtml(txt) + "</div>";
   }
 
+  // Texto/precio para compartir un producto.
+  function shareTextFor(p) {
+    var lines = ["*" + p.title + "*"];
+    if (CFG.showPrice && p.suggestedPrice) {
+      lines.push("Precio sugerido: " +
+        formatPrice(p.suggestedPrice.amount, p.suggestedPrice.currencyCode));
+    } else if (CFG.showPrice && p.price) {
+      lines.push(formatPrice(p.price.amount, p.price.currencyCode));
+    }
+    lines.push("Mira el catálogo de " + (CFG.storeName || "") + ":");
+    return lines.join("\n");
+  }
+
+  function shareProduct(p) {
+    var url = location.href.split("#")[0];
+    var text = shareTextFor(p);
+    if (navigator.share) {
+      navigator.share({ title: p.title, text: text, url: url }).catch(function () {});
+      return;
+    }
+    // Fallback: abrir WhatsApp con el mensaje + link.
+    var wa = "https://wa.me/?text=" + encodeURIComponent(text + "\n" + url);
+    window.open(wa, "_blank", "noopener");
+  }
+
+  var ICON_SHARE =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
+
   function cardHtml(p, idx) {
     var img = p.images.length
       ? '<img loading="lazy" src="' + escapeHtml(p.images[0].url) + '" alt="' +
@@ -393,10 +434,12 @@
       : '<div class="no-img">Sin imagen</div>';
     return (
       '<article class="card" data-idx="' + idx + '">' +
-      '  <div class="card-media" data-open="' + idx + '">' + img + "</div>" +
+      '  <div class="card-media" data-open="' + idx + '">' + img +
+      '    <button class="share-btn" data-share="' + idx + '" aria-label="Compartir producto">' +
+           ICON_SHARE + "</button>" +
+      "  </div>" +
       '  <div class="card-body">' +
       '    <div class="card-title" data-open="' + idx + '">' + escapeHtml(p.title) + "</div>" +
-      (CFG.storeName ? '    <div class="card-brand">' + escapeHtml(CFG.storeName) + "</div>" : "") +
       priceHtml(p, false) +
       ctaHtml(p, false) +
       "  </div>" +
@@ -415,8 +458,16 @@
     });
   }
 
+  function updateCount(n) {
+    var el = document.getElementById("result-count");
+    if (!el) return;
+    el.textContent = n ? (n + (n === 1 ? " producto" : " productos")) : "";
+    el.hidden = !n;
+  }
+
   function renderGrid() {
     var list = currentList();
+    updateCount(list.length);
     if (!list.length) {
       elGrid.innerHTML = "";
       elStatus.hidden = false;
@@ -474,6 +525,7 @@
   }
 
   function openSheet(p) {
+    var idx = ALL.indexOf(p);
     sheetBody.innerHTML =
       carouselHtml(p) +
       '<div class="sheet-info">' +
@@ -484,6 +536,8 @@
         ? '<p class="sheet-desc">' + escapeHtml(truncate(p.description, 220)) + "</p>"
         : "") +
       ctaHtml(p, true) +
+      '<button class="sheet-share" data-share="' + idx + '">' + ICON_SHARE +
+        "Compartir producto</button>" +
       "</div>";
 
     backdrop.hidden = false;
@@ -570,12 +624,27 @@
 
   /* ------------------------------ Eventos -------------------------------- */
   function wireEvents() {
-    // Abrir detalle al tocar imagen o título.
+    // Grilla: compartir (prioridad) o abrir detalle.
     elGrid.addEventListener("click", function (e) {
+      var s = e.target.closest("[data-share]");
+      if (s) {
+        e.stopPropagation();
+        var si = parseInt(s.getAttribute("data-share"), 10);
+        if (ALL[si]) shareProduct(ALL[si]);
+        return;
+      }
       var t = e.target.closest("[data-open]");
       if (!t) return;
       var idx = parseInt(t.getAttribute("data-open"), 10);
       if (ALL[idx]) openSheet(ALL[idx]);
+    });
+
+    // Compartir desde la hoja de detalle.
+    sheetBody.addEventListener("click", function (e) {
+      var s = e.target.closest("[data-share]");
+      if (!s) return;
+      var si = parseInt(s.getAttribute("data-share"), 10);
+      if (ALL[si]) shareProduct(ALL[si]);
     });
 
     // Taps de país.

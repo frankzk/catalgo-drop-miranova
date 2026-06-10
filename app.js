@@ -300,15 +300,22 @@
     };
   }
 
+  // Cache-busting para imágenes locales (no aplica a data: URIs del preview).
+  function bustUrl(u) {
+    if (!u || /^data:/.test(u)) return u;
+    var v = CFG.imageVersion;
+    return v ? (u + (u.indexOf("?") > -1 ? "&" : "?") + "v=" + v) : u;
+  }
+
   // Normaliza un producto desde data/products.json (modo estático, sin Shopify).
   // Esquema flexible: { title, description, category?, images?[], image?,
   //   providerPrice?, suggestedPrice?, price?, currency?, boxville? }
   function normalizeStatic(item, idx) {
     var imgs = [];
     if (Array.isArray(item.images)) {
-      imgs = item.images.filter(Boolean).map(function (u) { return { url: u, altText: item.title }; });
+      imgs = item.images.filter(Boolean).map(function (u) { return { url: bustUrl(u), altText: item.title }; });
     } else if (item.image) {
-      imgs = [{ url: item.image, altText: item.title }];
+      imgs = [{ url: bustUrl(item.image), altText: item.title }];
     }
     if (!imgs.length && CFG.placeholderImages) {
       imgs = [{ url: placeholderImage(item.title), altText: item.title }];

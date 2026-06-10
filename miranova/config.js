@@ -22,6 +22,7 @@ window.CATALOG_CONFIG = {
   /* ---- Fuente de productos (estático, sin Shopify) ---- */
   productsSource: "static",
   placeholderImages: true,         // miniaturas generadas mientras no haya fotos reales
+  imageVersion: "2",               // sube este número cuando cambies imágenes (cache)
   currency: "HNL",                 // moneda por defecto
 
   /* ---- Catálogo por país (taps en la cabecera) ----

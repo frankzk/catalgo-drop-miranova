@@ -76,6 +76,11 @@
   .modal .modal-actions{display:flex;gap:10px;margin-top:18px}
   .modal .modal-actions .btn{flex:1}
   .btn-del-confirm{background:#dc2626;color:#fff;border:none}
+  /* Modal del formulario (editar/agregar) */
+  .modal-form{max-width:560px;width:100%;max-height:90vh;overflow-y:auto;text-align:left;position:relative}
+  .modal-form h2{font-size:18px}
+  .modal-x{position:absolute;top:10px;right:12px;border:none;background:#f0f1f4;border-radius:50%;
+       width:32px;height:32px;font-size:20px;line-height:1;color:#333;display:grid;place-items:center}
 </style>
 </head>
 <body>
@@ -119,9 +124,10 @@
       <div id="list"></div>
     </section>
 
-    <!-- FORM -->
-    <section id="form-view" hidden>
-      <div class="card">
+    <!-- FORM (popup) -->
+    <div class="modal-backdrop" id="form-view" hidden>
+      <div class="modal modal-form">
+        <button class="modal-x" id="form-x" aria-label="Cerrar">×</button>
         <h2 id="form-title" style="margin:0 0 4px">Nuevo producto</h2>
         <p class="muted" id="form-country" style="margin:0 0 8px"></p>
         <label>Título *</label>
@@ -156,7 +162,7 @@
           <button class="btn btn-ghost" id="cancel-btn">Cancelar</button>
         </div>
       </div>
-    </section>
+    </div>
 
     <div id="loading" hidden><div class="spin"></div></div>
   </main>
@@ -327,9 +333,10 @@
     $("f-img").value="";
     var prev=$("f-preview");
     if(p.image){ prev.src = SITE_IMG_BASE + p.image; prev.hidden=false; } else { prev.hidden=true; prev.src=""; }
-    $("list-view").hidden=true; $("form-view").hidden=false; window.scrollTo(0,0);
+    $("form-view").hidden=false;            // popup encima de la lista (no cambia de pestaña)
+    var mf=document.querySelector(".modal-form"); if(mf) mf.scrollTop=0;
   }
-  function closeForm(){ $("form-view").hidden=true; $("list-view").hidden=false; }
+  function closeForm(){ $("form-view").hidden=true; }
 
   function fileToBase64(file){
     return new Promise(function(res,rej){
@@ -443,6 +450,8 @@
   });
   $("add-btn").addEventListener("click", function(){ openForm(null); });
   $("cancel-btn").addEventListener("click", closeForm);
+  $("form-x").addEventListener("click", closeForm);
+  $("form-view").addEventListener("click", function(e){ if(e.target===this) closeForm(); });
   $("save-btn").addEventListener("click", save);
   $("list").addEventListener("click", function(e){
     var ed=e.target.closest("[data-edit]"); if(ed){ openForm(parseInt(ed.getAttribute("data-edit"),10)); return; }
@@ -452,7 +461,11 @@
   $("del-cancel").addEventListener("click", closeDelModal);
   $("del-confirm").addEventListener("click", confirmDelete);
   $("del-modal").addEventListener("click", function(e){ if(e.target===this) closeDelModal(); });
-  document.addEventListener("keydown", function(e){ if(e.key==="Escape" && !$("del-modal").hidden) closeDelModal(); });
+  document.addEventListener("keydown", function(e){
+    if(e.key!=="Escape") return;
+    if(!$("del-modal").hidden) closeDelModal();
+    else if(!$("form-view").hidden) closeForm();
+  });
   // Buscador
   $("search").addEventListener("input", function(){ searchTerm=this.value.trim(); renderList(); });
   $("f-img").addEventListener("change", function(){

@@ -1,0 +1,4 @@
+{
+  "_comment": "Respaldo opcional para boxvilleSource:'list'. Mapea SKU (o handle, o id numerico) -> URL de Boxville. Ejemplo:",
+  "SKU-EJEMPLO-123": "https://boxville.com/p/sku-ejemplo-123"
+}

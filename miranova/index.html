@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5" />
+  <meta name="theme-color" content="#f6f7f9" />
+  <title>Catálogo proveedor</title>
+  <meta name="description" content="Catálogo proveedor / vitrina de dropshipping. Conecta cada producto en Boxville." />
+  <link rel="stylesheet" href="../styles.css?v=1" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-avatar" id="brand-avatar"></div>
+        <div class="brand-text">
+          <div class="brand-name" id="brand-name">Catálogo</div>
+          <div class="brand-sub" id="brand-sub"></div>
+        </div>
+      </div>
+
+      <p class="headline" id="headline" hidden></p>
+
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="search" placeholder="Buscar productos…" autocomplete="off" />
+      </div>
+
+      <nav class="chips" id="chips" aria-label="Categorías"></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="status" id="status">
+      <div class="spinner"></div>
+      Cargando productos…
+    </div>
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </main>
+
+  <footer>
+    <span id="footer-note"></span>
+  </footer>
+
+  <!-- Hoja de detalle (bottom sheet) -->
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden></div>
+  <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Detalle de producto" hidden>
+    <div class="sheet-grabber"></div>
+    <button class="sheet-close" id="sheet-close" aria-label="Cerrar">×</button>
+    <div class="sheet-scroll" id="sheet-scroll">
+      <div id="sheet-body"></div>
+    </div>
+  </aside>
+
+  <script src="config.js?v=1"></script>
+  <script src="../app.js?v=1"></script>
+</body>
+</html>

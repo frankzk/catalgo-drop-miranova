@@ -1,5 +1,23 @@
 [
   {
+    "title": "Yerba Magic: Té Instantáneo en Polvo con L-Teanina",
+    "description": "Té instantáneo en polvo Yerba Magic con L-teanina, sabor durazno-mango. Alimenta tu mente y aporta enfoque mental y salud intestinal de forma natural.",
+    "category": "suplementos",
+    "providerPrice": 7531,
+    "suggestedPrice": 18832.5,
+    "currency": "CRC",
+    "image": "data/images/cr-yerba-magic.jpg"
+  },
+  {
+    "title": "Cápsulas de Shilajit 100% Puro del Himalaya — 92 Minerales (30 cáps.)",
+    "description": "Shilajit puro del Himalaya con 92 minerales. Más energía, potencia y testosterona; apoya la vitalidad sexual, el enfoque y la resistencia. Vigor masculino renovado.",
+    "category": "suplementos",
+    "providerPrice": 5490,
+    "suggestedPrice": 13730,
+    "currency": "CRC",
+    "image": "data/images/cr-shilajit-92.jpg"
+  },
+  {
     "title": "Parches Kinoki: Desintoxicación Plantar (10 Detox Pads)",
     "description": "Parches de desintoxicación plantar (incluye 10 pads) que ayudan a eliminar toxinas, reducir la fatiga acumulada y mejorar tu bienestar. Fáciles de usar mientras duermes.",
     "category": "otros",
@@ -9,7 +27,52 @@
     "image": "data/images/cr-parches-kinoki.jpg"
   },
   {
-    "title": "Cámara de Seguridad WiFi Tipo Foco con Visión 360°",
+    "title": "Nail Fungal: Gotas Antihongos Avanzado para Uñas 30 ml",
+    "description": "Solución avanzada antihongos para uñas en gotas (30 ml). Ayuda a recuperar uñas sanas y de aspecto claro. ¡Funciona de verdad!",
+    "category": "otros",
+    "providerPrice": 3475,
+    "suggestedPrice": 8692.5,
+    "currency": "CRC",
+    "image": "data/images/cr-nail-fungal.jpg"
+  },
+  {
+    "title": "Shampoo en Barra Polygonum para Oscurecer el Cabello (Set de 2)",
+    "description": "Set de 2 shampoos en barra de polygonum (Natural Darkening) que oscurecen el cabello de forma gradual y natural. Cuidado capilar sin químicos agresivos.",
+    "category": "belleza",
+    "providerPrice": 3364,
+    "suggestedPrice": 8415,
+    "currency": "CRC",
+    "image": "data/images/cr-shampoo-polygonum.jpg"
+  },
+  {
+    "title": "Shampoo Max Shine: Tinte Instantáneo y Cobertura de Canas (10 sachets)",
+    "description": "Oscurece el cabello y cubre canas en 5 minutos. Brillo intenso, resultado natural, nutre raíces y reduce caída. Incluye 10 sachets.",
+    "category": "belleza",
+    "providerPrice": 4475,
+    "suggestedPrice": 11192.5,
+    "currency": "CRC",
+    "image": "data/images/cr-shampoo-maxshine.jpg"
+  },
+  {
+    "title": "Crema Depilatoria Corporal Suave y Sin Irritación (Cuerpo y Rostro)",
+    "description": "Crema depilatoria corporal sin dolor que elimina el vello en minutos, dejando la piel suave e hidratada. Apta para cuerpo y rostro.",
+    "category": "belleza",
+    "providerPrice": 2825,
+    "suggestedPrice": 7067.5,
+    "currency": "CRC",
+    "image": "data/images/cr-crema-depilatoria.jpg"
+  },
+  {
+    "title": "Exfoliante Therapy Foot 532 ml: Elimina Durezas y Revitaliza Manos y Pies",
+    "description": "Exfoliante corporal aromático (532 ml) que elimina durezas y revitaliza manos y pies. Exfoliación profunda, hidratación intensa y piel renovada en cada uso.",
+    "category": "belleza",
+    "providerPrice": 3325,
+    "suggestedPrice": 8317.5,
+    "currency": "CRC",
+    "image": "data/images/cr-exfoliante-foot.jpg"
+  },
+  {
+    "title": "Cámara de Seguridad WiFi: Tipo Foco con Visión 360°",
     "description": "Cámara de seguridad WiFi tipo foco con visión 360°. Vigilancia discreta para tu hogar o negocio; se enrosca en el portalámparas y se controla desde el celular.",
     "category": "hogar",
     "providerPrice": 8875,
@@ -18,30 +81,21 @@
     "image": "data/images/cr-camara-wifi.jpg"
   },
   {
-    "title": "Yerba Magic: Té Instantáneo en Polvo con L-Teanina",
-    "description": "Té instantáneo en polvo Yerba Magic con L-teanina, sabor durazno-mango. Alimenta tu mente y aporta energía y enfoque de forma natural.",
-    "category": "suplementos",
-    "providerPrice": 7531,
-    "suggestedPrice": 18832.5,
+    "title": "Bulby: Bombilla / Lámpara Solar Plegable",
+    "description": "Bombilla y lámpara solar plegable de luz brillante y energía duradera. Ideal para exteriores y emergencias: carga solar, diseño plegable y modo emergencia.",
+    "category": "hogar",
+    "providerPrice": 5525,
+    "suggestedPrice": 13817.5,
     "currency": "CRC",
-    "image": "data/images/cr-yerba-magic.jpg"
+    "image": "data/images/cr-bulby-solar.jpg"
   },
   {
-    "title": "Shampoo Max Shine: Tinte Instantáneo y Cobertura de Canas",
-    "description": "Shampoo Max Shine: tinte instantáneo que oscurece el cabello y cubre canas en minutos, con brillo intenso y resultado natural.",
-    "category": "belleza",
-    "providerPrice": 4475,
-    "suggestedPrice": 11192.5,
+    "title": "Soporte Celular Giratorio 360°: Montaje para Tablero y Parabrisas",
+    "description": "Soporte de celular para el auto con rotación 360°, ventosa de succión extrafuerte, brazo telescópico y pinza antideslizante. Montaje seguro para tablero y parabrisas.",
+    "category": "otros",
+    "providerPrice": 3475,
+    "suggestedPrice": 8692.5,
     "currency": "CRC",
-    "image": "data/images/cr-shampoo-maxshine.jpg"
-  },
-  {
-    "title": "Crema Depilatoria Corporal Suave y Sin Irritación",
-    "description": "Crema depilatoria corporal suave y sin irritación. Elimina el vello en minutos dejando la piel suave e hidratada.",
-    "category": "belleza",
-    "providerPrice": 2825,
-    "suggestedPrice": 7067.5,
-    "currency": "CRC",
-    "image": "data/images/cr-crema-depilatoria.jpg"
+    "image": "data/images/cr-soporte-celular.jpg"
   }
 ]

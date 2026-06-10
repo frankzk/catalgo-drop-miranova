@@ -38,7 +38,7 @@ window.CATALOG_CONFIG = {
   /* ---- Botón flotante de WhatsApp (consultas del catálogo) ---- */
   // Pon tu número con código de país, sin signos. Honduras = 504.
   // Mientras tenga "X", el botón queda oculto.
-  whatsappNumber: "504XXXXXXXX",
+  whatsappNumber: "51987713640",
   whatsappLabel: "Consultas",
   whatsappMessage: "¡Hola! Vi el Catálogo Drop Miranova y quiero más información sobre los productos."
 };

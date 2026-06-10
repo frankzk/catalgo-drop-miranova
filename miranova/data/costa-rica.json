@@ -1,1 +1,47 @@
-[]
+[
+  {
+    "title": "Parches Kinoki: Desintoxicación Plantar",
+    "description": "Parches de desintoxicación plantar que ayudan a eliminar toxinas, reducir la fatiga acumulada y mejorar tu bienestar. Fáciles de usar mientras duermes.",
+    "category": "otros",
+    "providerPrice": 2195,
+    "suggestedPrice": 5492.5,
+    "currency": "CRC",
+    "image": "data/images/cr-parches-kinoki.jpg"
+  },
+  {
+    "title": "Cámara de Seguridad WiFi Tipo Foco con Visión 360°",
+    "description": "Cámara de seguridad WiFi tipo foco con visión 360°. Vigilancia discreta para tu hogar o negocio; se enrosca en el portalámparas y se controla desde el celular.",
+    "category": "hogar",
+    "providerPrice": 8875,
+    "suggestedPrice": 22192.5,
+    "currency": "CRC",
+    "image": "data/images/cr-camara-wifi.jpg"
+  },
+  {
+    "title": "Yerba Magic: Té Instantáneo en Polvo con L-Teanina",
+    "description": "Té instantáneo en polvo Yerba Magic con L-teanina, sabor durazno-mango. Alimenta tu mente y aporta energía y enfoque de forma natural.",
+    "category": "suplementos",
+    "providerPrice": 7531,
+    "suggestedPrice": 18832.5,
+    "currency": "CRC",
+    "image": "data/images/cr-yerba-magic.jpg"
+  },
+  {
+    "title": "Shampoo Max Shine: Tinte Instantáneo y Cobertura de Canas",
+    "description": "Shampoo Max Shine: tinte instantáneo que oscurece el cabello y cubre canas en minutos, con brillo intenso y resultado natural.",
+    "category": "belleza",
+    "providerPrice": 4475,
+    "suggestedPrice": 11192.5,
+    "currency": "CRC",
+    "image": "data/images/cr-shampoo-maxshine.jpg"
+  },
+  {
+    "title": "Crema Depilatoria Corporal Suave y Sin Irritación",
+    "description": "Crema depilatoria corporal suave y sin irritación. Elimina el vello en minutos dejando la piel suave e hidratada.",
+    "category": "belleza",
+    "providerPrice": 2825,
+    "suggestedPrice": 7067.5,
+    "currency": "CRC",
+    "image": "data/images/cr-crema-depilatoria.jpg"
+  }
+]

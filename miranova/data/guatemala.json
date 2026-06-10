@@ -1,1 +1,11 @@
-[]
+[
+  {
+    "title": "Pulsera Magnética de Cobre Saludable Cooper",
+    "description": "Pulsera de cobre con imanes que ayuda a aliviar el dolor articular y a sentir más energía. Diseño elegante y unisex, de estilo único. Producto de salud y bienestar.",
+    "category": "otros",
+    "providerPrice": 89,
+    "suggestedPrice": 227.5,
+    "currency": "GTQ",
+    "image": "data/images/pulsera-cobre.jpg"
+  }
+]

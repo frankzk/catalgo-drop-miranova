@@ -1,68 +1,65 @@
-# Panel de administración — Guía de instalación (una sola vez)
+# Panel de administración — Guía (versión simple, sin servidor)
 
 El panel vive en **`https://frankzk.github.io/catalgo-drop-miranova/admin/`** y
-permite agregar/editar productos y subir fotos con formularios. Los cambios se
-guardan en el repositorio y el catálogo se actualiza solo (~1 minuto).
+permite agregar/editar/eliminar productos y subir fotos con formularios. Al
+guardar, el catálogo se actualiza solo en ~1 minuto.
 
-Como el sitio es estático (sin servidor), para que el panel pueda **guardar en
-GitHub de forma segura** hace falta un pequeño “servicio de acceso” (OAuth)
-gratuito. Se configura **una sola vez**. Sigue estos 3 pasos.
+No usa Cloudflare ni OAuth. Solo hace falta **una “clave de acceso”** (un token
+de GitHub) que se pega **una sola vez** en el navegador y queda guardada en ese
+dispositivo. Después, tu socia solo abre la página y entra directo.
 
 ---
 
-## Paso 1 — Crear la app de acceso en GitHub (OAuth App)
+## Paso 1 — Generar la clave de acceso (una vez, lo hace el administrador)
 
-1. Entra a: **https://github.com/settings/developers** → pestaña **OAuth Apps**
-   → **New OAuth App**.
+1. Entra (con la cuenta dueña del repositorio) a:
+   **https://github.com/settings/personal-access-tokens/new**
+   *(Settings → Developer settings → Personal access tokens → Fine-grained tokens).*
 2. Llena:
-   - **Application name:** `Catálogo Drop Miranova Admin`
-   - **Homepage URL:** `https://frankzk.github.io/catalgo-drop-miranova/`
-   - **Authorization callback URL:** `https://TU-AUTH.workers.dev/callback`
-     *(esta URL la tendrás en el Paso 2; puedes volver a editarla después).*
-3. **Register application.**
-4. Copia el **Client ID** y genera un **Client secret** (botón *Generate a new
-   client secret*). Guárdalos: los usarás en el Paso 2.
+   - **Token name:** `Panel Catálogo Miranova`
+   - **Expiration:** lo que prefieras (ej. 1 año, o “No expiration”).
+   - **Resource owner:** tu usuario (frankzk).
+   - **Repository access:** *Only select repositories* → elige
+     **`catalgo-drop-miranova`**.
+   - **Permissions → Repository permissions → Contents:** ponlo en
+     **Read and write**. *(Solo ese permiso; nada más.)*
+3. **Generate token** y **copia** la clave (empieza con `github_pat_…`).
+   ⚠️ Guárdala como una contraseña: no la compartas en público.
 
 ---
 
-## Paso 2 — Servicio de acceso (Cloudflare Worker, gratis)
+## Paso 2 — Dejar el panel listo en el teléfono/compu de tu socia
 
-Usamos el proyecto oficial **`sveltia-cms-auth`** (un mini servicio que conecta
-el panel con GitHub). Es gratis y no requiere mantenimiento.
+1. En el dispositivo de tu socia, abre
+   **`https://frankzk.github.io/catalgo-drop-miranova/admin/`**
+2. Pega la clave del Paso 1 en **“Clave de acceso”** y pulsa **Entrar**.
+3. ¡Listo! Queda guardada en ese navegador. **Ya no la tendrá que escribir** —
+   cada vez que abra esa página entra directo.
 
-1. Crea una cuenta gratis en **https://dash.cloudflare.com** (si no tienes).
-2. Abre **https://github.com/sveltia/sveltia-cms-auth** y usa el botón
-   **“Deploy to Cloudflare Workers”** (o despliégalo con Wrangler siguiendo su
-   README).
-3. En el Worker, configura las **variables de entorno**:
-   - `GITHUB_CLIENT_ID` = el Client ID del Paso 1
-   - `GITHUB_CLIENT_SECRET` = el Client secret del Paso 1
-   - `ALLOWED_DOMAINS` = `frankzk.github.io`
-4. Cuando termine, Cloudflare te da una URL tipo
-   `https://sveltia-cms-auth.TU-USUARIO.workers.dev`.
-   - Vuelve al Paso 1 y pon como **callback**:
-     `https://sveltia-cms-auth.TU-USUARIO.workers.dev/callback`
-   - Copia esa URL base (sin `/callback`).
-
-5. Edita el archivo **`admin/config.yml`** de este repositorio y reemplaza la
-   línea `base_url:` con tu URL del Worker:
-   ```yml
-   base_url: https://sveltia-cms-auth.TU-USUARIO.workers.dev
-   ```
-   *(Lo puedes editar desde la web de GitHub: abre el archivo → lápiz → Commit.)*
+> Recomendación: que tu socia le ponga **acceso directo** a esa página en la
+> pantalla de inicio de su teléfono (menú del navegador → “Agregar a inicio”).
+> Así la abre como si fuera una app.
 
 ---
 
-## Paso 3 — Dar acceso a tu socia
+## Cómo se usa (tu socia)
 
-1. En el repositorio: **Settings → Collaborators → Add people** → agrega a tu
-   socia por su usuario o correo de GitHub. Ella acepta la invitación que le
-   llega por correo.
-2. Listo. Tu socia entra a **`https://frankzk.github.io/catalgo-drop-miranova/admin/`**,
-   pulsa **“Sign in with GitHub”**, autoriza una vez, y ya puede:
-   - Elegir país (Honduras / Costa Rica / Guatemala).
-   - **Agregar producto**, escribir título, precios y categoría, **subir la foto**.
-   - Guardar (**Publish**) → el catálogo se actualiza solo en ~1 minuto.
+1. Elige el país arriba (🇭🇳 / 🇨🇷 / 🇬🇹).
+2. **+ Agregar producto** → escribe título, precios y categoría, **sube la foto**,
+   y **Guardar**. (Para editar o borrar, usa los botones de cada producto.)
+3. En ~1 minuto el catálogo público queda actualizado.
+
+---
+
+## Seguridad y mantenimiento
+
+- La clave es como una contraseña con permiso de **solo este repositorio** y
+  **solo contenido** (no puede tocar otras cosas de tu GitHub).
+- Vive únicamente en el navegador de tu socia (no se sube al sitio).
+- **Si se filtra o quieres cortar el acceso:** entra a
+  https://github.com/settings/personal-access-tokens , **revoca** el token y
+  genera uno nuevo (repite el Paso 2). El anterior deja de funcionar al instante.
+- El panel **no necesita Claude** para nada: funciona solo.
 
 ---
 
@@ -70,10 +67,6 @@ el panel con GitHub). Es gratis y no requiere mantenimiento.
 
 - **Fotos:** sube fotos limpias del producto (idealmente cuadradas). Se guardan
   en `miranova/data/images/`.
-- **Si reemplazas una foto** por otra con el **mismo nombre**, puede tardar en
-  verse por la caché; usa un nombre distinto o sube el número `imageVersion` en
-  `miranova/config.js`.
-- **Rama de publicación:** el panel guarda en la rama `claude/new-session-pm108s`
-  (la que publica el sitio). Si algún día cambias a `main`, actualiza `branch:`
-  en `admin/config.yml`.
-- El panel **no necesita Claude** para nada: una vez configurado, funciona solo.
+- **Rama de publicación:** el panel guarda en `claude/new-session-pm108s`
+  (la rama que publica el sitio). Si algún día cambias a `main`, actualiza la
+  constante `BRANCH` al inicio del `<script>` en `admin/index.html`.

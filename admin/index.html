@@ -1,14 +1,391 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex" />
-  <title>Admin · Catálogo Drop Miranova</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex" />
+<title>Panel · Catálogo Drop Miranova</title>
+<style>
+  :root{ --bg:#f6f7f9; --card:#fff; --text:#15181d; --muted:#8a909a; --line:#e7e8ec;
+         --accent:#15181d; --green:#16a34a; --pink:#e5097f; --radius:14px; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+       background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+  [hidden]{display:none!important}
+  header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;
+         display:flex;align-items:center;gap:10px}
+  header .title{font-weight:800;font-size:16px}
+  header .spacer{flex:1}
+  button{font-family:inherit;cursor:pointer}
+  .btn{border:none;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-green{background:var(--green);color:#fff}
+  .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--text)}
+  .btn-danger{background:#fff;border:1px solid #f0c4c4;color:#c0392b}
+  main{max-width:780px;margin:0 auto;padding:16px}
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+  .tab{flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:8px 14px;
+       font-weight:700;font-size:14px;white-space:nowrap}
+  .tab[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+       border-radius:var(--radius);padding:10px;margin-bottom:10px}
+  .row img{width:60px;height:60px;border-radius:10px;object-fit:cover;background:#eee;flex:0 0 auto}
+  .row .info{flex:1;min-width:0}
+  .row .name{font-weight:700;font-size:14px;line-height:1.3}
+  .row .meta{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .row .acts{display:flex;gap:6px;flex:0 0 auto}
+  .icon-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-size:13px;font-weight:700}
+  label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}
+  input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font-size:15px;
+       font-family:inherit;background:#fff;outline:none}
+  input:focus,textarea:focus,select:focus{border-color:#cfd2da}
+  textarea{min-height:72px;resize:vertical}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+  .muted{color:var(--muted);font-size:13px}
+  .center{max-width:420px;margin:48px auto;text-align:center}
+  .center h1{font-size:20px;margin:0 0 6px}
+  .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#15181d;color:#fff;
+         padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;z-index:50;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .preview-img{width:96px;height:96px;border-radius:12px;object-fit:cover;border:1px solid var(--line);margin-top:6px;background:#eee}
+  .spin{width:26px;height:26px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;
+        animation:s .8s linear infinite;margin:30px auto}
+  @keyframes s{to{transform:rotate(360deg)}}
+  .bar{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+  .bar .count{color:var(--muted);font-size:13px;font-weight:600}
+  a.link{color:var(--pink)}
+</style>
 </head>
 <body>
-  <!-- Panel de administración (Sveltia CMS). Edita productos y sube fotos;
-       guarda los cambios directo al repositorio y el catálogo se actualiza solo. -->
-  <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js" type="module"></script>
+
+<!-- LOGIN -->
+<section id="login" class="center" hidden>
+  <div class="card">
+    <h1>Panel del catálogo</h1>
+    <p class="muted">Pega la <b>clave de acceso</b> una sola vez. Quedará guardada en este dispositivo.</p>
+    <label for="token">Clave de acceso</label>
+    <input id="token" type="password" placeholder="ghp_… o github_pat_…" autocomplete="off" />
+    <div style="height:12px"></div>
+    <button class="btn btn-primary" id="login-btn" style="width:100%">Entrar</button>
+    <p id="login-err" class="muted" style="color:#c0392b" hidden></p>
+    <p class="muted" style="margin-top:14px">¿No tienes la clave? Pídesela al administrador (ver <span class="link">admin/SETUP.md</span>).</p>
+  </div>
+</section>
+
+<!-- APP -->
+<div id="app" hidden>
+  <header>
+    <span class="title">🛍️ Panel del catálogo</span>
+    <span class="spacer"></span>
+    <button class="btn btn-ghost" id="logout">Salir</button>
+  </header>
+  <main>
+    <div id="tabs" class="tabs"></div>
+
+    <!-- LISTA -->
+    <section id="list-view">
+      <div class="bar">
+        <button class="btn btn-green" id="add-btn">+ Agregar producto</button>
+        <span class="spacer" style="flex:1"></span>
+        <span class="count" id="count"></span>
+      </div>
+      <div id="list"></div>
+    </section>
+
+    <!-- FORM -->
+    <section id="form-view" hidden>
+      <div class="card">
+        <h2 id="form-title" style="margin:0 0 4px">Nuevo producto</h2>
+        <p class="muted" id="form-country" style="margin:0 0 8px"></p>
+        <label>Título *</label>
+        <input id="f-title" type="text" placeholder="Nombre del producto" />
+        <label>Descripción</label>
+        <textarea id="f-desc" placeholder="Reseña corta para el detalle"></textarea>
+        <div class="grid2">
+          <div>
+            <label>Precio proveedor <span id="lbl-prov" class="muted"></span></label>
+            <input id="f-prov" type="number" step="0.01" inputmode="decimal" />
+          </div>
+          <div>
+            <label>Precio sugerido <span id="lbl-sug" class="muted"></span></label>
+            <input id="f-sug" type="number" step="0.01" inputmode="decimal" />
+          </div>
+        </div>
+        <label>Categoría</label>
+        <select id="f-cat">
+          <option value="suplementos">Suplementos</option>
+          <option value="belleza">Belleza</option>
+          <option value="hogar">Hogar y cocina</option>
+          <option value="otros">Otros</option>
+        </select>
+        <label>Foto del producto</label>
+        <input id="f-img" type="file" accept="image/*" />
+        <img id="f-preview" class="preview-img" hidden alt="" />
+        <div style="height:16px"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-green" id="save-btn">Guardar</button>
+          <button class="btn btn-ghost" id="cancel-btn">Cancelar</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="loading" hidden><div class="spin"></div></div>
+  </main>
+</div>
+
+<script>
+/* ============================================================================
+   Panel de administración del Catálogo Drop Miranova.
+   Edita los productos por país y guarda directo en GitHub (sin servidor).
+   La "clave de acceso" es un token de GitHub guardado solo en este navegador.
+   ============================================================================ */
+(function(){
+  "use strict";
+  var REPO = "frankzk/catalgo-drop-miranova";
+  var BRANCH = "claude/new-session-pm108s";
+  var IMG_DIR = "miranova/data/images/";      // ruta en el repositorio
+  var IMG_PREFIX = "data/images/";            // ruta guardada en el JSON
+  var COUNTRIES = [
+    { id:"honduras",   label:"🇭🇳 Honduras",   file:"miranova/data/honduras.json",   currency:"HNL", sym:"L" },
+    { id:"costa-rica", label:"🇨🇷 Costa Rica", file:"miranova/data/costa-rica.json", currency:"CRC", sym:"₡" },
+    { id:"guatemala",  label:"🇬🇹 Guatemala",  file:"miranova/data/guatemala.json",  currency:"GTQ", sym:"Q" }
+  ];
+  var API = "https://api.github.com/repos/" + REPO;
+  var SITE_IMG_BASE = "../miranova/";  // para previsualizar imágenes existentes desde /admin
+
+  var token = localStorage.getItem("miranova_token") || "";
+  var active = COUNTRIES[0];
+  var state = {};  // por país: { products, sha }
+  var editIndex = -1;
+  var pendingImageDataUrl = null;
+
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* --------- helpers base64 / utf8 --------- */
+  function b64EncodeUtf8(str){
+    var bytes = new TextEncoder().encode(str), bin = "";
+    for (var i=0;i<bytes.length;i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+  }
+  function b64DecodeUtf8(b64){
+    var bin = atob(b64.replace(/\n/g,"")), bytes = new Uint8Array(bin.length);
+    for (var i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  }
+  function slugify(s){
+    return (s||"producto").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+      .replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40) || "producto";
+  }
+
+  /* --------- GitHub API --------- */
+  function gh(path, opts){
+    opts = opts || {};
+    return fetch(API + path, {
+      method: opts.method || "GET",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Accept": "application/vnd.github+json",
+        "Content-Type": "application/json"
+      },
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    });
+  }
+  function getFile(repoPath){
+    return gh("/contents/" + repoPath + "?ref=" + encodeURIComponent(BRANCH)).then(function(r){
+      if (r.status === 404) return { json:{products:[]}, sha:null };
+      if (!r.ok) throw new Error("No se pudo leer " + repoPath + " (" + r.status + ")");
+      return r.json().then(function(d){
+        var obj = JSON.parse(b64DecodeUtf8(d.content));
+        return { json: obj, sha: d.sha };
+      });
+    });
+  }
+  function putFile(repoPath, contentStr, sha, message){
+    var body = { message: message, content: b64EncodeUtf8(contentStr), branch: BRANCH };
+    if (sha) body.sha = sha;
+    return gh("/contents/" + repoPath, { method:"PUT", body: body }).then(function(r){
+      if (!r.ok) return r.json().then(function(e){ throw new Error(e.message || "Error al guardar"); });
+      return r.json();
+    });
+  }
+  function putImage(repoPath, base64, message){
+    var body = { message: message, content: base64, branch: BRANCH };
+    return gh("/contents/" + repoPath, { method:"PUT", body: body }).then(function(r){
+      if (!r.ok) return r.json().then(function(e){ throw new Error(e.message || "Error al subir la foto"); });
+      return r.json();
+    });
+  }
+
+  /* --------- UI --------- */
+  function toast(msg){
+    var t = document.createElement("div"); t.className="toast"; t.textContent=msg;
+    document.body.appendChild(t); setTimeout(function(){ t.remove(); }, 3200);
+  }
+  function showLoading(on){ $("loading").hidden = !on; }
+
+  function renderTabs(){
+    $("tabs").innerHTML = COUNTRIES.map(function(c){
+      return '<button class="tab" data-id="'+c.id+'" aria-pressed="'+(c.id===active.id)+'">'+c.label+'</button>';
+    }).join("");
+  }
+
+  function fmt(n, sym){ if(n==null||n==="") return ""; return sym+" "+Number(n).toLocaleString("es"); }
+
+  function renderList(){
+    var st = state[active.id] || { products:[] };
+    var ps = st.products || [];
+    $("count").textContent = ps.length + (ps.length===1?" producto":" productos");
+    if(!ps.length){ $("list").innerHTML = '<p class="muted">Aún no hay productos en '+active.label+'. Toca “Agregar producto”.</p>'; return; }
+    $("list").innerHTML = ps.map(function(p,i){
+      var img = p.image ? (SITE_IMG_BASE + p.image) : "";
+      return '<div class="row">'+
+        (img?'<img src="'+img+'" alt="" onerror="this.style.visibility=\'hidden\'">':'<div style="width:60px;height:60px;border-radius:10px;background:#eee;flex:0 0 auto"></div>')+
+        '<div class="info"><div class="name">'+esc(p.title||"(sin título)")+'</div>'+
+        '<div class="meta">'+esc(fmt(p.providerPrice,active.sym))+' → '+esc(fmt(p.suggestedPrice,active.sym))+'</div></div>'+
+        '<div class="acts">'+
+          '<button class="icon-btn" data-edit="'+i+'">Editar</button>'+
+          '<button class="icon-btn" data-del="'+i+'">🗑</button>'+
+        '</div></div>';
+    }).join("");
+  }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
+
+  function loadCountry(){
+    showLoading(true); $("list").innerHTML="";
+    return getFile(active.file).then(function(res){
+      var obj = res.json;
+      var products = Array.isArray(obj) ? obj : (obj.products || []);
+      state[active.id] = { products: products, sha: res.sha };
+      showLoading(false); renderList();
+    }).catch(function(e){ showLoading(false); alert(e.message); });
+  }
+
+  function openForm(index){
+    editIndex = (index==null?-1:index);
+    pendingImageDataUrl = null;
+    var p = editIndex>=0 ? state[active.id].products[editIndex] : {};
+    $("form-title").textContent = editIndex>=0 ? "Editar producto" : "Nuevo producto";
+    $("form-country").textContent = active.label + " · precios en " + active.sym;
+    $("lbl-prov").textContent = "("+active.sym+")"; $("lbl-sug").textContent = "("+active.sym+")";
+    $("f-title").value = p.title||""; $("f-desc").value = p.description||"";
+    $("f-prov").value = p.providerPrice!=null?p.providerPrice:""; $("f-sug").value = p.suggestedPrice!=null?p.suggestedPrice:"";
+    $("f-cat").value = p.category||"suplementos";
+    $("f-img").value="";
+    var prev=$("f-preview");
+    if(p.image){ prev.src = SITE_IMG_BASE + p.image; prev.hidden=false; } else { prev.hidden=true; prev.src=""; }
+    $("list-view").hidden=true; $("form-view").hidden=false; window.scrollTo(0,0);
+  }
+  function closeForm(){ $("form-view").hidden=true; $("list-view").hidden=false; }
+
+  function fileToBase64(file){
+    return new Promise(function(res,rej){
+      var r=new FileReader();
+      r.onload=function(){ var s=r.result; res(s.substring(s.indexOf(",")+1)); };
+      r.onerror=rej; r.readAsDataURL(file);
+    });
+  }
+
+  function save(){
+    var title=$("f-title").value.trim();
+    if(!title){ alert("El título es obligatorio."); return; }
+    var prov=$("f-prov").value, sug=$("f-sug").value;
+    var prod = {
+      title: title,
+      description: $("f-desc").value.trim(),
+      category: $("f-cat").value,
+      providerPrice: prov===""?null:Number(prov),
+      suggestedPrice: sug===""?null:Number(sug),
+      currency: active.currency
+    };
+    var existing = editIndex>=0 ? state[active.id].products[editIndex] : null;
+    if(existing && existing.image) prod.image = existing.image;
+
+    var imgFile = $("f-img").files[0];
+    showLoading(true);
+
+    var step = Promise.resolve();
+    if(imgFile){
+      var fname = active.id + "-" + slugify(title) + "-" + Date.now().toString(36) + ".jpg";
+      step = fileToBase64(imgFile).then(function(b64){
+        return putImage(IMG_DIR + fname, b64, "admin: foto " + title).then(function(){
+          prod.image = IMG_PREFIX + fname;
+        });
+      });
+    }
+
+    step.then(function(){
+      var st = state[active.id];
+      var products = st.products.slice();
+      if(editIndex>=0) products[editIndex]=prod; else products.push(prod);
+      var contentStr = JSON.stringify({ products: products }, null, 2) + "\n";
+      var msg = (editIndex>=0?"admin: editar ":"admin: agregar ") + title + " ("+active.id+")";
+      return putFile(active.file, contentStr, st.sha, msg).then(function(resp){
+        st.products = products; st.sha = resp.content.sha;
+      });
+    }).then(function(){
+      showLoading(false); closeForm(); renderList();
+      toast("✅ Guardado. El catálogo se actualiza en ~1 minuto.");
+    }).catch(function(e){ showLoading(false); alert("Error: "+e.message); });
+  }
+
+  function del(index){
+    var p = state[active.id].products[index];
+    if(!confirm("¿Eliminar “"+(p.title||"este producto")+"”?")) return;
+    showLoading(true);
+    var st = state[active.id];
+    var products = st.products.slice(); products.splice(index,1);
+    var contentStr = JSON.stringify({ products: products }, null, 2) + "\n";
+    putFile(active.file, contentStr, st.sha, "admin: eliminar "+(p.title||"producto")+" ("+active.id+")").then(function(resp){
+      st.products = products; st.sha = resp.content.sha;
+      showLoading(false); renderList(); toast("Producto eliminado.");
+    }).catch(function(e){ showLoading(false); alert("Error: "+e.message); });
+  }
+
+  /* --------- auth --------- */
+  function showApp(){
+    $("login").hidden=true; $("app").hidden=false;
+    renderTabs(); loadCountry();
+  }
+  function tryLogin(tok){
+    return fetch(API, { headers:{ "Authorization":"Bearer "+tok, "Accept":"application/vnd.github+json" } })
+      .then(function(r){ return r.ok; });
+  }
+
+  /* --------- eventos --------- */
+  $("login-btn").addEventListener("click", function(){
+    var tok = $("token").value.trim(); if(!tok) return;
+    $("login-err").hidden=true; $("login-btn").textContent="Verificando…";
+    tryLogin(tok).then(function(ok){
+      $("login-btn").textContent="Entrar";
+      if(!ok){ $("login-err").textContent="Clave inválida o sin acceso al repositorio."; $("login-err").hidden=false; return; }
+      token=tok; localStorage.setItem("miranova_token", tok); showApp();
+    });
+  });
+  $("token").addEventListener("keydown", function(e){ if(e.key==="Enter") $("login-btn").click(); });
+  $("logout").addEventListener("click", function(){
+    localStorage.removeItem("miranova_token"); token=""; location.reload();
+  });
+  $("tabs").addEventListener("click", function(e){
+    var b=e.target.closest(".tab"); if(!b) return;
+    var id=b.getAttribute("data-id"); if(id===active.id) return;
+    active = COUNTRIES.filter(function(c){return c.id===id;})[0];
+    renderTabs(); closeForm(); loadCountry();
+  });
+  $("add-btn").addEventListener("click", function(){ openForm(null); });
+  $("cancel-btn").addEventListener("click", closeForm);
+  $("save-btn").addEventListener("click", save);
+  $("list").addEventListener("click", function(e){
+    var ed=e.target.closest("[data-edit]"); if(ed){ openForm(parseInt(ed.getAttribute("data-edit"),10)); return; }
+    var dl=e.target.closest("[data-del]"); if(dl){ del(parseInt(dl.getAttribute("data-del"),10)); }
+  });
+  $("f-img").addEventListener("change", function(){
+    var f=this.files[0], prev=$("f-preview");
+    if(f){ prev.src=URL.createObjectURL(f); prev.hidden=false; }
+  });
+
+  /* --------- init --------- */
+  if(token){ showApp(); } else { $("login").hidden=false; }
+})();
+</script>
 </body>
 </html>

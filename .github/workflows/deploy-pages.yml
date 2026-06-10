@@ -1,9 +1,11 @@
 name: Deploy to GitHub Pages
 
-# Auto-despliega el sitio estático en cada push a main.
+# Auto-despliega el sitio estático en cada push.
+# Incluye la rama actual de trabajo para tener vista previa inmediata;
+# cuando 'main' sea la rama por defecto, puedes dejar solo [main].
 on:
   push:
-    branches: [main]
+    branches: [main, claude/new-session-pm108s]
   workflow_dispatch:
 
 permissions:
@@ -28,6 +30,9 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          # Activa GitHub Pages automáticamente en el primer despliegue.
+          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

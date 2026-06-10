@@ -271,6 +271,25 @@ main {
   margin-top: 4px;
 }
 
+/* Caja de precios proveedor / sugerido (vitrina de proveedor) */
+.card-pricebox, .sheet-pricebox { margin-top: 7px; }
+.sheet-pricebox { margin-top: 12px; }
+.price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 2px 0;
+}
+.price-label {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+.price-prov { font-size: 15px; font-weight: 800; color: var(--text); }
+.price-sug  { font-size: 15px; font-weight: 800; color: var(--price); }
+.sheet-pricebox .price-label { font-size: 13px; }
+.sheet-pricebox .price-prov, .sheet-pricebox .price-sug { font-size: 18px; }
+
 .cta {
   margin-top: 10px;
   width: 100%;

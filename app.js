@@ -243,6 +243,40 @@
     return "";
   }
 
+  // Fallback opcional: si un producto no resuelve link propio y hay
+  // boxvilleFallbackUrl en config, se usa ese (útil para vistas previas).
+  function withFallback(url) {
+    if (url) return url;
+    return CFG.boxvilleFallbackUrl || "";
+  }
+
+  /* ---- Placeholder de imagen (data URI SVG) para vistas sin foto real ---- */
+  function placeholderImage(title) {
+    var t = (title || "").trim();
+    // Monograma: iniciales de hasta 2 palabras significativas.
+    var words = t.split(/\s+/).filter(function (w) { return w.length > 2; });
+    var mono = ((words[0] || t).charAt(0) + (words[1] ? words[1].charAt(0) : ""))
+      .toUpperCase();
+    // Hue estable por título.
+    var h = 0;
+    for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) % 360;
+    var c1 = "hsl(" + h + ",58%,42%)";
+    var c2 = "hsl(" + ((h + 40) % 360) + ",62%,30%)";
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600">' +
+      '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0" stop-color="' + c1 + '"/>' +
+      '<stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs>' +
+      '<rect width="600" height="600" fill="url(#g)"/>' +
+      '<text x="300" y="300" font-family="Arial,Helvetica,sans-serif" font-size="200" ' +
+      'font-weight="800" fill="rgba(255,255,255,.92)" text-anchor="middle" ' +
+      'dominant-baseline="central">' + escapeHtml(mono) + '</text>' +
+      '<text x="300" y="540" font-family="Arial,Helvetica,sans-serif" font-size="34" ' +
+      'font-weight="700" letter-spacing="3" fill="rgba(255,255,255,.85)" ' +
+      'text-anchor="middle">' + escapeHtml((CFG.storeName || "").toUpperCase()) +
+      '</text></svg>';
+    return "data:image/svg+xml," + encodeURIComponent(svg);
+  }
+
   function normalize(node) {
     var images = ((node.images && node.images.edges) || [])
       .map(function (e) { return e.node; })
@@ -259,8 +293,42 @@
       variant: variant,
       qty: tq.qty,
       category: categorize(node),
-      boxville: boxvilleUrl(node, variant),
+      boxville: withFallback(boxvilleUrl(node, variant)),
       price: variant && variant.price ? variant.price : null
+    };
+  }
+
+  // Normaliza un producto desde data/products.json (modo estático, sin Shopify).
+  // Esquema flexible: { title, description, category?, images?[], image?,
+  //   providerPrice?, suggestedPrice?, price?, currency?, boxville? }
+  function normalizeStatic(item, idx) {
+    var imgs = [];
+    if (Array.isArray(item.images)) {
+      imgs = item.images.filter(Boolean).map(function (u) { return { url: u, altText: item.title }; });
+    } else if (item.image) {
+      imgs = [{ url: item.image, altText: item.title }];
+    }
+    if (!imgs.length && CFG.placeholderImages) {
+      imgs = [{ url: placeholderImage(item.title), altText: item.title }];
+    }
+    var cur = item.currency || CFG.currency || "USD";
+    return {
+      id: item.id || ("static-" + idx),
+      handle: item.handle || "",
+      title: item.title || "",
+      description: stripHtml(item.description),
+      productType: item.productType || "",
+      images: imgs,
+      variant: null,
+      qty: null,
+      category: item.category || categorize(item),
+      boxville: withFallback(item.boxville || ""),
+      // Precios proveedor / sugerido (vitrina de proveedor) o precio simple.
+      providerPrice: item.providerPrice != null
+        ? { amount: item.providerPrice, currencyCode: cur } : null,
+      suggestedPrice: item.suggestedPrice != null
+        ? { amount: item.suggestedPrice, currencyCode: cur } : null,
+      price: item.price != null ? { amount: item.price, currencyCode: cur } : null
     };
   }
 
@@ -293,7 +361,21 @@
   }
 
   function priceHtml(p, big) {
-    if (!CFG.showPrice || !p.price) return "";
+    if (!CFG.showPrice) return "";
+    // Modo proveedor: muestra "Precio proveedor" y, opcional, "Precio sugerido".
+    if (p.providerPrice) {
+      var prov = formatPrice(p.providerPrice.amount, p.providerPrice.currencyCode);
+      var sug = p.suggestedPrice
+        ? formatPrice(p.suggestedPrice.amount, p.suggestedPrice.currencyCode) : "";
+      var cls = big ? "sheet-pricebox" : "card-pricebox";
+      return '<div class="' + cls + '">' +
+        '<div class="price-row"><span class="price-label">Precio proveedor</span>' +
+        '<span class="price-prov">' + escapeHtml(prov) + '</span></div>' +
+        (sug ? '<div class="price-row"><span class="price-label">Precio sugerido</span>' +
+          '<span class="price-sug">' + escapeHtml(sug) + '</span></div>' : "") +
+        "</div>";
+    }
+    if (!p.price) return "";
     var txt = formatPrice(p.price.amount, p.price.currencyCode);
     return '<div class="' + (big ? "sheet-price" : "card-price") + '">' +
       escapeHtml(txt) + "</div>";
@@ -568,11 +650,46 @@
       .catch(function () { window.BOXVILLE_LIST = {}; });
   }
 
-  /* -------------------------------- Init --------------------------------- */
-  function start() {
-    renderHeader();
-    wireEvents();
+  function finishLoad(normalized) {
+    // Empujar al final los productos SIN imagen (orden estable).
+    var withImg = normalized.filter(function (p) { return p.images.length; });
+    var noImg = normalized.filter(function (p) { return !p.images.length; });
+    ALL = withImg.concat(noImg);
 
+    if (!ALL.length) {
+      elStatus.className = "status";
+      elStatus.textContent = "No hay productos disponibles por ahora.";
+      return;
+    }
+    renderChips();
+    renderGrid();
+  }
+
+  function loadError(err) {
+    elStatus.className = "status error";
+    elStatus.innerHTML = "No se pudieron cargar los productos.<br><small>" +
+      escapeHtml(err.message || String(err)) + "</small>";
+    // eslint-disable-next-line no-console
+    console.error(err);
+  }
+
+  // Modo estático: lee productos desde un JSON local (sin Shopify).
+  function startStatic() {
+    var path = CFG.productsPath || "data/products.json";
+    fetch(path)
+      .then(function (r) {
+        if (!r.ok) throw new Error("No se pudo leer " + path + " (" + r.status + ")");
+        return r.json();
+      })
+      .then(function (items) {
+        if (!Array.isArray(items)) items = (items && items.products) || [];
+        finishLoad(items.map(normalizeStatic));
+      })
+      .catch(loadError);
+  }
+
+  // Modo Shopify: carga en vivo desde la Storefront API.
+  function startShopify() {
     if (!CFG.shopifyDomain || !CFG.storefrontToken ||
         /TU_|REEMPLAZA|XXXX/i.test(CFG.storefrontToken + CFG.shopifyDomain)) {
       elStatus.className = "status error";
@@ -580,32 +697,20 @@
         "Configura <code>shopifyDomain</code> y <code>storefrontToken</code> en config.js.";
       return;
     }
-
     Promise.all([loadBoxvilleList(), fetchAll()])
       .then(function (results) {
         var nodes = results[1] || [];
-        var normalized = nodes.map(normalize).filter(hasStock);
-
-        // Empujar al final los productos SIN imagen (orden estable).
-        var withImg = normalized.filter(function (p) { return p.images.length; });
-        var noImg = normalized.filter(function (p) { return !p.images.length; });
-        ALL = withImg.concat(noImg);
-
-        if (!ALL.length) {
-          elStatus.className = "status";
-          elStatus.textContent = "No hay productos disponibles por ahora.";
-          return;
-        }
-        renderChips();
-        renderGrid();
+        finishLoad(nodes.map(normalize).filter(hasStock));
       })
-      .catch(function (err) {
-        elStatus.className = "status error";
-        elStatus.innerHTML = "No se pudieron cargar los productos.<br><small>" +
-          escapeHtml(err.message || String(err)) + "</small>";
-        // eslint-disable-next-line no-console
-        console.error(err);
-      });
+      .catch(loadError);
+  }
+
+  /* -------------------------------- Init --------------------------------- */
+  function start() {
+    renderHeader();
+    wireEvents();
+    if (CFG.productsSource === "static") startStatic();
+    else startShopify();
   }
 
   if (document.readyState === "loading") {

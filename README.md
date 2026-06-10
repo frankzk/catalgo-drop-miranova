@@ -38,6 +38,44 @@ Cada tienda vive en `.../<repo>/<tienda>/`. Para **agregar una tienda** ver más
 
 ---
 
+## Dos modos de datos
+
+El catálogo puede mostrar productos de dos formas (campo `productsSource` en `config.js`):
+
+- **`"static"`** (modo actual de MIRANOVA): lee los productos de
+  `data/products.json`. Ideal para arrancar **sin** tener todavía la tienda
+  Shopify, o como vitrina de proveedor con precio **proveedor** y **sugerido**.
+  Si un producto no trae foto y `placeholderImages: true`, se genera una
+  miniatura con monograma de la marca.
+- **`"shopify"`**: carga **en vivo** desde la Storefront API (ver más abajo).
+
+Para pasar de `static` a `shopify`: cambia `productsSource: "shopify"` y completa
+`shopifyDomain` + `storefrontToken`.
+
+### `data/products.json` (modo estático)
+
+```json
+[
+  {
+    "title": "Nombre del producto",
+    "description": "Reseña corta para el detalle.",
+    "category": "suplementos",
+    "providerPrice": 319,
+    "suggestedPrice": 915,
+    "currency": "HNL",
+    "image": "https://.../foto.jpg",
+    "boxville": "https://boxville.com/p/mi-producto"
+  }
+]
+```
+
+Campos: `title` (oblig.), `description`, `category` (si se omite, se deduce por
+palabras clave), `providerPrice`/`suggestedPrice` (vitrina de proveedor) o `price`
+(precio simple), `currency`, `image` o `images:[...]`, `boxville` (link propio).
+Si falta `boxville`, se usa `boxvilleFallbackUrl` del config (si está definido).
+
+---
+
 ## Puesta en marcha rápida
 
 1. Edita `miranova/config.js`:

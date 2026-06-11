@@ -70,7 +70,8 @@
       "providerPrice": 399,
       "suggestedPrice": 1118,
       "currency": "HNL",
-      "image": "data/images/nad-resveratrol.jpg"
+      "image": "data/images/nad-resveratrol.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a14744b1c3d04518bdfb149"
     },
     {
       "title": "Turkesterone — Cápsulas de Ajuga Turkestánica",
@@ -177,7 +178,8 @@
       "providerPrice": 254,
       "suggestedPrice": 750,
       "currency": "HNL",
-      "image": "data/images/magnesium-complex.jpg"
+      "image": "data/images/magnesium-complex.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a26fc5b636cbc905af2a362"
     },
     {
       "title": "Liquid Chlorophyll — Clorofila Líquida Concentrada",
@@ -186,7 +188,8 @@
       "providerPrice": 256,
       "suggestedPrice": 755,
       "currency": "HNL",
-      "image": "data/images/liquid-chlorophyll.jpg"
+      "image": "data/images/liquid-chlorophyll.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a24a321636cbc905af296c2"
     },
     {
       "title": "Lemme Burn — Cápsulas para Activar el Metabolismo",
@@ -195,7 +198,8 @@
       "providerPrice": 303,
       "suggestedPrice": 875,
       "currency": "HNL",
-      "image": "data/images/lemme-burn.jpg"
+      "image": "data/images/lemme-burn.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a24a24d636cbc905af296b6"
     },
     {
       "title": "King Maker — Masculinidad Máxima, 120 cápsulas",
@@ -204,7 +208,8 @@
       "providerPrice": 302,
       "suggestedPrice": 872,
       "currency": "HNL",
-      "image": "data/images/king-maker.jpg"
+      "image": "data/images/king-maker.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a24a00d636cbc905af29696"
     },
     {
       "title": "Pulsera Magnética de Cobre Saludable Cooper",

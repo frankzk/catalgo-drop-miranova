@@ -7,7 +7,8 @@
       "providerPrice": 319,
       "suggestedPrice": 915,
       "currency": "HNL",
-      "image": "data/images/gomitas-shilajit.jpg"
+      "image": "data/images/gomitas-shilajit.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a12943c1c3d04518bdfa9a8"
     },
     {
       "title": "Gomitas de Vinagre de Manzana: Quema Grasa",
@@ -16,7 +17,8 @@
       "providerPrice": 239,
       "suggestedPrice": 712,
       "currency": "HNL",
-      "image": "data/images/gomitas-vinagre.jpg"
+      "image": "data/images/gomitas-vinagre.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a123b311c3d04518bdfa84a"
     },
     {
       "title": "Champú de Romero Nutritivo y Regenerador",
@@ -61,7 +63,8 @@
       "providerPrice": 349,
       "suggestedPrice": 991,
       "currency": "HNL",
-      "image": "data/images/oxido-nitrico.jpg"
+      "image": "data/images/oxido-nitrico.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a14762f1c3d04518bdfb158"
     },
     {
       "title": "NAD Resveratrol — Cápsulas de Reparación Celular",
@@ -80,7 +83,8 @@
       "providerPrice": 249,
       "suggestedPrice": 737,
       "currency": "HNL",
-      "image": "data/images/turkesterone.jpg"
+      "image": "data/images/turkesterone.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a145df51c3d04518bdfb005"
     },
     {
       "title": "Multivitamínico de Ginseng y Maca: Energía Explosiva",
@@ -89,7 +93,8 @@
       "providerPrice": 231,
       "suggestedPrice": 692,
       "currency": "HNL",
-      "image": "data/images/multivitaminico-ginseng.jpg"
+      "image": "data/images/multivitaminico-ginseng.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a1296e11c3d04518bdfa9b4"
     },
     {
       "title": "TrueFem Balance — Cápsulas para el Equilibrio Hormonal",

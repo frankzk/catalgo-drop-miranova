@@ -43,7 +43,7 @@ window.CATALOG_CONFIG = {
   // Si un producto no tiene link, el botón no se muestra. Sin fallback genérico.
   boxvilleSource: "metafield",     // se ignora en modo estático (se usa item.boxville)
   boxvilleFallbackUrl: "",
-  ctaText: "Conectar en Drop",
+  ctaText: "Ver en SoyDrop.com",
   showCta: true,                   // botón visible (solo en el detalle del producto)
 
   /* ---- Botón flotante de WhatsApp (consultas del catálogo) ---- */

@@ -97,7 +97,8 @@
       "providerPrice": 376,
       "suggestedPrice": 1060,
       "currency": "HNL",
-      "image": "data/images/truefem-balance.jpg"
+      "image": "data/images/truefem-balance.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a270de6636cbc905af2a43c"
     },
     {
       "title": "Shilajit 100% Puro — Resina Fuente de Energía Vital del Himalaya",
@@ -106,7 +107,8 @@
       "providerPrice": 271,
       "suggestedPrice": 793,
       "currency": "HNL",
-      "image": "data/images/shilajit-resina.jpg"
+      "image": "data/images/shilajit-resina.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a270aef636cbc905af2a41e"
     },
     {
       "title": "Shampoo de Cebolla — Fortalecimiento Capilar",
@@ -115,7 +117,8 @@
       "providerPrice": 240,
       "suggestedPrice": 715,
       "currency": "HNL",
-      "image": "data/images/shampoo-cebolla.jpg"
+      "image": "data/images/shampoo-cebolla.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a270848636cbc905af2a406"
     },
     {
       "title": "SUPER HUMAN Ethiopian Black Seed Oil — Aceite de Comino Negro",
@@ -124,7 +127,8 @@
       "providerPrice": 303,
       "suggestedPrice": 875,
       "currency": "HNL",
-      "image": "data/images/super-human-blackseed.jpg"
+      "image": "data/images/super-human-blackseed.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a270713636cbc905af2a3fa"
     },
     {
       "title": "Saw Palmetto 500mg — Soporte para la Salud de la Próstata",
@@ -133,7 +137,8 @@
       "providerPrice": 332,
       "suggestedPrice": 948,
       "currency": "HNL",
-      "image": "data/images/saw-palmetto.jpg"
+      "image": "data/images/saw-palmetto.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2705ed636cbc905af2a3ee"
     },
     {
       "title": "Oregano Oil 6000 — Aceite de Orégano Potencia Extrema",
@@ -142,7 +147,8 @@
       "providerPrice": 303,
       "suggestedPrice": 875,
       "currency": "HNL",
-      "image": "data/images/oregano-oil.jpg"
+      "image": "data/images/oregano-oil.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2704c9636cbc905af2a3de"
     },
     {
       "title": "Nattokinase — Mejora de Circulación Arterial",
@@ -151,7 +157,8 @@
       "providerPrice": 260,
       "suggestedPrice": 765,
       "currency": "HNL",
-      "image": "data/images/nattokinase.jpg"
+      "image": "data/images/nattokinase.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2702b8636cbc905af2a3cb"
     },
     {
       "title": "NAD Mens Complex — Energía, Rendimiento y Vitalidad",
@@ -160,7 +167,8 @@
       "providerPrice": 303,
       "suggestedPrice": 875,
       "currency": "HNL",
-      "image": "data/images/nad-mens.jpg"
+      "image": "data/images/nad-mens.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2701c2636cbc905af2a3bd"
     },
     {
       "title": "Magnesium Complex — Fórmula de Absorción",
@@ -197,6 +205,26 @@
       "suggestedPrice": 872,
       "currency": "HNL",
       "image": "data/images/king-maker.jpg"
+    },
+    {
+      "title": "Pulsera Magnética de Cobre Saludable Cooper",
+      "description": "Pulsera de cobre con imanes que ayuda a aliviar el dolor articular y a sentir más energía. Diseño elegante y unisex, de estilo único. Bienestar diario.",
+      "category": "otros",
+      "providerPrice": 339,
+      "suggestedPrice": 966.06,
+      "currency": "HNL",
+      "image": "data/images/pulsera-cobre.jpg",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a285d89636cbc905af2b1c6"
+    },
+    {
+      "title": "Vascu Glow: Gotas Líquidas Todo en Uno con Vitaminas K2 D3 y Extractos Botánicos 30 ml",
+      "description": "Gotas líquidas todo en uno con vitaminas K2 y D3 y extractos botánicos. Apoya la salud cardiovascular, la energía, el flujo sanguíneo y el bienestar general.",
+      "category": "suplementos",
+      "providerPrice": 303,
+      "suggestedPrice": 874.62,
+      "currency": "HNL",
+      "image": "",
+      "boxville": "https://app.soydrop.com/dropshipping/product/6a2725a7636cbc905af2a696"
     }
   ]
 }

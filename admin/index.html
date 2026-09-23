@@ -27,6 +27,7 @@
   .tab{flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:8px 14px;
        font-weight:700;font-size:14px;white-space:nowrap}
   .tab[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tab-add{border-style:dashed;color:var(--green)}
   .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
        border-radius:var(--radius);padding:10px;margin-bottom:10px}
   .row img{width:60px;height:60px;border-radius:10px;object-fit:cover;background:#eee;flex:0 0 auto}
@@ -172,6 +173,26 @@
       </div>
     </div>
 
+    <!-- NUEVO PAÍS (popup) -->
+    <div class="modal-backdrop" id="country-view" hidden>
+      <div class="modal modal-form">
+        <button class="modal-x" id="country-x" aria-label="Cerrar">×</button>
+        <h2 style="margin:0 0 4px">Nuevo país</h2>
+        <p class="muted" style="margin:0 0 8px">Se agrega como pestaña en el panel y en el catálogo, con su propia lista de productos.</p>
+        <label for="c-name">Nombre del país *</label>
+        <input id="c-name" type="text" placeholder="Ej.: El Salvador" autocomplete="off" />
+        <label for="c-flag">Bandera <span class="muted">(emoji, opcional)</span></label>
+        <input id="c-flag" type="text" placeholder="🇸🇻" autocomplete="off" maxlength="8" />
+        <label for="c-cur">Moneda</label>
+        <select id="c-cur"></select>
+        <div style="height:16px"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-green" id="c-save">Agregar país</button>
+          <button class="btn btn-ghost" id="c-cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
     <div id="loading" hidden><div class="spin"></div></div>
   </main>
 </div>
@@ -202,11 +223,32 @@
   var BRANCH = "claude/new-session-pm108s";
   var IMG_DIR = "miranova/data/images/";      // ruta en el repositorio
   var IMG_PREFIX = "data/images/";            // ruta guardada en el JSON
-  var COUNTRIES = [
-    { id:"honduras",   label:"🇭🇳 Honduras",   file:"miranova/data/honduras.json",   currency:"HNL", sym:"L" },
-    { id:"costa-rica", label:"🇨🇷 Costa Rica", file:"miranova/data/costa-rica.json", currency:"CRC", sym:"₡" },
-    { id:"guatemala",  label:"🇬🇹 Guatemala",  file:"miranova/data/guatemala.json",  currency:"GTQ", sym:"Q" }
+  // Lista de países: vive en miranova/data/countries.json (la lee también el
+  // catálogo). Esta de abajo es solo el respaldo si ese archivo aún no existe.
+  var COUNTRIES_FILE = "miranova/data/countries.json";
+  var DEFAULT_COUNTRIES = [
+    { id:"honduras",   label:"Honduras",   flag:"🇭🇳", currency:"HNL", symbol:"L", productsPath:"data/honduras.json" },
+    { id:"costa-rica", label:"Costa Rica", flag:"🇨🇷", currency:"CRC", symbol:"₡", productsPath:"data/costa-rica.json" },
+    { id:"guatemala",  label:"Guatemala",  flag:"🇬🇹", currency:"GTQ", symbol:"Q", productsPath:"data/guatemala.json" }
   ];
+  var CURRENCIES = [
+    ["HNL","L","Lempira (Honduras)"], ["CRC","₡","Colón (Costa Rica)"], ["GTQ","Q","Quetzal (Guatemala)"],
+    ["USD","$","Dólar (El Salvador, Ecuador, Panamá…)"], ["NIO","C$","Córdoba (Nicaragua)"],
+    ["PAB","B/.","Balboa (Panamá)"], ["MXN","$","Peso mexicano"], ["DOP","RD$","Peso dominicano"],
+    ["COP","$","Peso colombiano"], ["PEN","S/","Sol (Perú)"], ["CLP","$","Peso chileno"],
+    ["ARS","$","Peso argentino"], ["BOB","Bs","Boliviano"], ["PYG","₲","Guaraní (Paraguay)"],
+    ["UYU","$U","Peso uruguayo"], ["EUR","€","Euro (España)"]
+  ];
+  var countryList = DEFAULT_COUNTRIES.slice();   // formato del catálogo
+  var countriesSha = null;
+  var COUNTRIES = [];                             // formato del panel (derivado)
+  function syncCountries(){
+    COUNTRIES = countryList.map(function(c){
+      return { id:c.id, name:c.label, label:(c.flag?c.flag+" ":"")+c.label,
+               file:"miranova/"+c.productsPath, currency:c.currency, sym:c.symbol||c.currency };
+    });
+  }
+  syncCountries();
   var API = "https://api.github.com/repos/" + REPO;
   var SITE_IMG_BASE = "../miranova/";  // para previsualizar imágenes existentes desde /admin
 
@@ -285,8 +327,67 @@
 
   function renderTabs(){
     $("tabs").innerHTML = COUNTRIES.map(function(c){
-      return '<button class="tab" data-id="'+c.id+'" aria-pressed="'+(c.id===active.id)+'">'+c.label+'</button>';
-    }).join("");
+      return '<button class="tab" data-id="'+esc(c.id)+'" aria-pressed="'+(c.id===active.id)+'">'+esc(c.label)+'</button>';
+    }).join("") + '<button class="tab tab-add" id="add-country">+ País</button>';
+  }
+
+  /* --------- países --------- */
+  function loadCountries(){
+    return getFile(COUNTRIES_FILE).then(function(res){
+      var list = res.json && res.json.countries;
+      if (Array.isArray(list) && list.length) countryList = list;
+      countriesSha = res.sha;
+      syncCountries();
+      active = COUNTRIES.filter(function(c){ return c.id===active.id; })[0] || COUNTRIES[0];
+    });
+  }
+  function saveCountries(list, message){
+    var contentStr = JSON.stringify({ countries: list }, null, 2) + "\n";
+    return putFile(COUNTRIES_FILE, contentStr, countriesSha, message).then(function(resp){
+      countryList = list; countriesSha = resp.content.sha; syncCountries();
+    });
+  }
+  function openCountryForm(){
+    $("c-name").value = ""; $("c-flag").value = ""; $("c-cur").value = "USD";
+    $("country-view").hidden = false; $("c-name").focus();
+  }
+  function closeCountryForm(){ $("country-view").hidden = true; }
+  function addCountry(){
+    var name = $("c-name").value.trim();
+    if(!name){ alert("Escribe el nombre del país."); return; }
+    var id = slugify(name);
+    if(COUNTRIES.some(function(c){ return c.id===id; })){ alert("Ese país ya existe."); return; }
+    var cur = CURRENCIES.filter(function(x){ return x[0]===$("c-cur").value; })[0];
+    var entry = { id:id, label:name, flag:$("c-flag").value.trim(), currency:cur[0], symbol:cur[1],
+                  productsPath:"data/"+id+".json" };
+    var btn = $("c-save"); btn.disabled = true; btn.textContent = "Guardando…";
+    function done(){ btn.disabled = false; btn.textContent = "Agregar país"; }
+    // 1) archivo de productos vacío (si no existe), 2) lista de países.
+    getFile("miranova/"+entry.productsPath).then(function(res){
+      if(res.sha) return;
+      return putFile("miranova/"+entry.productsPath, JSON.stringify({ products: [] }, null, 2) + "\n",
+                     null, "admin: crear catálogo de " + name);
+    }).then(function(){
+      return saveCountries(countryList.concat([entry]), "admin: agregar país " + name);
+    }).then(function(){
+      done(); closeCountryForm();
+      active = COUNTRIES.filter(function(c){ return c.id===id; })[0];
+      searchTerm=""; $("search").value="";
+      renderTabs(); loadCountry();
+      toast("✅ País agregado. Aparece en el catálogo en ~1 minuto.");
+    }).catch(function(e){ done(); alert("Error: "+e.message); });
+  }
+  // Solo se ofrece con el país vacío; su archivo de productos se conserva.
+  function removeCountry(){
+    if(COUNTRIES.length<=1){ alert("Debe quedar al menos un país."); return; }
+    if(!confirm("¿Quitar " + active.name + " del catálogo?")) return;
+    var id = active.id;
+    showLoading(true);
+    saveCountries(countryList.filter(function(c){ return c.id!==id; }), "admin: quitar país " + active.name)
+      .then(function(){
+        showLoading(false); active = COUNTRIES[0];
+        renderTabs(); loadCountry(); toast("País quitado.");
+      }).catch(function(e){ showLoading(false); alert("Error: "+e.message); });
   }
 
   function fmt(n, sym){ if(n==null||n==="") return ""; return sym+" "+Number(n).toLocaleString("es"); }
@@ -295,7 +396,11 @@
     var st = state[active.id] || { products:[] };
     var ps = st.products || [];
     $("count").textContent = ps.length + (ps.length===1?" producto":" productos");
-    if(!ps.length){ $("list").innerHTML = '<p class="muted">Aún no hay productos en '+active.label+'. Toca “Agregar producto”.</p>'; return; }
+    if(!ps.length){
+      $("list").innerHTML = '<p class="muted">Aún no hay productos en '+esc(active.label)+'. Toca “Agregar producto”.</p>'+
+        (COUNTRIES.length>1 ? '<button class="btn btn-danger" id="remove-country">Quitar este país</button>' : '');
+      return;
+    }
     // Filtro de búsqueda (mantiene el índice real con data-edit/data-del)
     var q = searchTerm.toLowerCase();
     var rows = ps.map(function(p,i){ return { p:p, i:i }; })
@@ -435,7 +540,9 @@
   /* --------- auth --------- */
   function showApp(){
     $("login").hidden=true; $("app").hidden=false;
-    renderTabs(); loadCountry();
+    showLoading(true);
+    loadCountries().catch(function(){ /* sin countries.json: se usa la lista por defecto */ })
+      .then(function(){ renderTabs(); loadCountry(); });
   }
   function tryLogin(tok){
     return fetch(API, { headers:{ "Authorization":"Bearer "+tok, "Accept":"application/vnd.github+json" } })
@@ -457,6 +564,7 @@
     localStorage.removeItem("miranova_token"); token=""; location.reload();
   });
   $("tabs").addEventListener("click", function(e){
+    if(e.target.closest("#add-country")){ openCountryForm(); return; }
     var b=e.target.closest(".tab"); if(!b) return;
     var id=b.getAttribute("data-id"); if(id===active.id) return;
     active = COUNTRIES.filter(function(c){return c.id===id;})[0];
@@ -469,6 +577,7 @@
   $("form-view").addEventListener("click", function(e){ if(e.target===this) closeForm(); });
   $("save-btn").addEventListener("click", save);
   $("list").addEventListener("click", function(e){
+    if(e.target.closest("#remove-country")){ removeCountry(); return; }
     var ed=e.target.closest("[data-edit]"); if(ed){ openForm(parseInt(ed.getAttribute("data-edit"),10)); return; }
     var dl=e.target.closest("[data-del]"); if(dl){ askDelete(parseInt(dl.getAttribute("data-del"),10)); }
   });
@@ -476,9 +585,18 @@
   $("del-cancel").addEventListener("click", closeDelModal);
   $("del-confirm").addEventListener("click", confirmDelete);
   $("del-modal").addEventListener("click", function(e){ if(e.target===this) closeDelModal(); });
+  // Modal de nuevo país
+  $("c-cur").innerHTML = CURRENCIES.map(function(x){
+    return '<option value="'+x[0]+'">'+esc(x[1]+" · "+x[2])+'</option>';
+  }).join("");
+  $("c-save").addEventListener("click", addCountry);
+  $("c-cancel").addEventListener("click", closeCountryForm);
+  $("country-x").addEventListener("click", closeCountryForm);
+  $("country-view").addEventListener("click", function(e){ if(e.target===this) closeCountryForm(); });
   document.addEventListener("keydown", function(e){
     if(e.key!=="Escape") return;
-    if(!$("del-modal").hidden) closeDelModal();
+    if(!$("country-view").hidden) closeCountryForm();
+    else if(!$("del-modal").hidden) closeDelModal();
     else if(!$("form-view").hidden) closeForm();
   });
   // Buscador

@@ -817,6 +817,27 @@
 
   // Modo estático: lee productos desde un JSON local (sin Shopify).
   function startStatic() {
+    // Si hay CFG.countriesPath, la lista de países sale de ese JSON (editable
+    // desde el panel). Si falla, se usa CFG.countries de config.js.
+    if (CFG.countriesPath && !CFG._countriesLoaded) {
+      CFG._countriesLoaded = true;
+      fetch(CFG.countriesPath, { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          var list = data && (Array.isArray(data) ? data : data.countries);
+          if (Array.isArray(list) && list.length) {
+            list.forEach(function (c) {
+              if (c.currency && c.symbol && CURRENCY_SYMBOL[c.currency] == null) {
+                CURRENCY_SYMBOL[c.currency] = c.symbol + (/[A-Za-z.]$/.test(c.symbol) ? " " : "");
+              }
+            });
+            CFG.countries = list;
+          }
+        })
+        .catch(function () {})
+        .then(startStatic);
+      return;
+    }
     // Catálogo por país: si hay CFG.countries, arrancamos con el primero.
     var cs = countriesList();
     if (cs) {

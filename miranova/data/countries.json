@@ -1,0 +1,28 @@
+{
+  "countries": [
+    {
+      "id": "honduras",
+      "label": "Honduras",
+      "flag": "🇭🇳",
+      "currency": "HNL",
+      "symbol": "L",
+      "productsPath": "data/honduras.json"
+    },
+    {
+      "id": "costa-rica",
+      "label": "Costa Rica",
+      "flag": "🇨🇷",
+      "currency": "CRC",
+      "symbol": "₡",
+      "productsPath": "data/costa-rica.json"
+    },
+    {
+      "id": "guatemala",
+      "label": "Guatemala",
+      "flag": "🇬🇹",
+      "currency": "GTQ",
+      "symbol": "Q",
+      "productsPath": "data/guatemala.json"
+    }
+  ]
+}

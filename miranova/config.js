@@ -28,7 +28,10 @@ window.CATALOG_CONFIG = {
   /* ---- Catálogo por país (taps en la cabecera) ----
      Cada país tiene su propia lista (productsPath), su moneda y, si quieres,
      su propio WhatsApp (whatsappNumber/whatsappMessage). Al tocar un tap se
-     cambia el catálogo en la misma página. Quita este bloque para un solo país. */
+     cambia el catálogo en la misma página. Quita este bloque para un solo país.
+     La lista real vive en data/countries.json (se edita desde el panel /admin
+     con "+ País"); esta de abajo solo se usa si ese archivo no se puede leer. */
+  countriesPath: "data/countries.json",
   countries: [
     { id: "honduras",   label: "Honduras",   flag: "🇭🇳", currency: "HNL", productsPath: "data/honduras.json" },
     { id: "costa-rica", label: "Costa Rica", flag: "🇨🇷", currency: "CRC", productsPath: "data/costa-rica.json" },

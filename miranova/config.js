@@ -13,14 +13,18 @@
 window.CATALOG_CONFIG = {
   /* ---- Marca / cabecera ---- */
   storeName: "MIRANOVA",
-  pageTitle: "Catálogo Drop Miranova · Honduras",
+  pageTitle: "Catálogo Drop Miranova",   // se le agrega " · <Plataforma>"
   brandAvatar: "",                 // URL de logo redondo (opcional). Vacío = inicial.
   headline: "",                    // vacío = cabecera más compacta (sin titular extra)
   tagline: "",
-  subtitle: "Proveedor dropshipping · Honduras",
+  subtitle: "Proveedor dropshipping",   // se le agrega " · <Plataforma>"
 
   /* ---- Fuente de productos (estático, sin Shopify) ---- */
   productsSource: "static",
+  // Las páginas /soydrop/, /dropi/, /miranova/… usan todas los datos de
+  // miranova/. Cada una declara su plataforma (window.CATALOG_PLATFORM) y la
+  // lista de plataformas vive en data/platforms.json (se edita desde /admin).
+  basePath: "../miranova/",
   placeholderImages: true,         // miniaturas generadas mientras no haya fotos reales
   imageVersion: "2",               // sube este número cuando cambies imágenes (cache)
   currency: "HNL",                 // moneda por defecto
@@ -29,9 +33,9 @@ window.CATALOG_CONFIG = {
      Cada país tiene su propia lista (productsPath), su moneda y, si quieres,
      su propio WhatsApp (whatsappNumber/whatsappMessage). Al tocar un tap se
      cambia el catálogo en la misma página. Quita este bloque para un solo país.
-     La lista real vive en data/countries.json (se edita desde el panel /admin
-     con "+ País"); esta de abajo solo se usa si ese archivo no se puede leer. */
-  countriesPath: "data/countries.json",
+     La lista real de cada plataforma vive en su countries.json (se edita desde
+     el panel /admin con "+ País"); esta de abajo es solo el respaldo de
+     SoyDrop si ese archivo no se puede leer. */
   countries: [
     { id: "honduras",   label: "Honduras",   flag: "🇭🇳", currency: "HNL", productsPath: "data/honduras.json" },
     { id: "costa-rica", label: "Costa Rica", flag: "🇨🇷", currency: "CRC", productsPath: "data/costa-rica.json" },

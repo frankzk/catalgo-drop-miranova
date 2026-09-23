@@ -44,10 +44,25 @@ dispositivo. Después, tu socia solo abre la página y entra directo.
 
 ## Cómo se usa (tu socia)
 
-1. Elige el país arriba (🇭🇳 / 🇨🇷 / 🇬🇹).
-2. **+ Agregar producto** → escribe título, precios y categoría, **sube la foto**,
-   y **Guardar**. (Para editar o borrar, usa los botones de cada producto.)
+1. Elige la **plataforma** arriba (SoyDrop, Dropi…) y luego el **país**.
+2. **+ Agregar producto** → escribe título, precios y categoría, el link del
+   producto en esa plataforma, **sube la foto**, y **Guardar**. (Para editar o
+   borrar, usa los botones de cada producto.)
 3. En ~1 minuto el catálogo público queda actualizado.
+
+Cada plataforma es un catálogo aparte, con su propia dirección y sus propios
+países y productos:
+
+- SoyDrop → `https://frankzk.github.io/catalgo-drop-miranova/soydrop/`
+  (el link antiguo `/miranova/` sigue mostrando SoyDrop)
+- Dropi → `https://frankzk.github.io/catalgo-drop-miranova/dropi/`
+
+**+ País** agrega un país a la plataforma elegida (nombre, bandera y moneda).
+Un país sin productos se puede quitar con **Quitar este país**.
+
+**+ Plataforma** crea un catálogo nuevo: su dirección es el nombre en
+minúsculas y con guiones (p. ej. "Rocket Shop" → `/rocket-shop/`). Tras crearla,
+agrégale países con **+ País**. La página tarda ~1 minuto en estar en línea.
 
 ---
 

@@ -28,6 +28,10 @@
        font-weight:700;font-size:14px;white-space:nowrap}
   .tab[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
   .tab-add{border-style:dashed;color:var(--green)}
+  .section-label{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+       color:var(--muted);margin:0 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+  .page-url{text-transform:none;letter-spacing:0;font-weight:600;color:#1d6ad6;text-decoration:none;
+       overflow-wrap:anywhere}
   .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
        border-radius:var(--radius);padding:10px;margin-bottom:10px}
   .row img{width:60px;height:60px;border-radius:10px;object-fit:cover;background:#eee;flex:0 0 auto}
@@ -116,10 +120,13 @@
       <span class="title">Panel del catálogo</span>
     </div>
     <span class="spacer"></span>
-    <a class="btn btn-ghost" href="../miranova/" target="_blank" rel="noopener">Ver catálogo ↗</a>
+    <a class="btn btn-ghost" id="view-link" href="../soydrop/" target="_blank" rel="noopener">Ver catálogo ↗</a>
     <button class="btn btn-ghost" id="logout">Salir</button>
   </header>
   <main>
+    <div class="section-label">Plataforma <a class="page-url" id="page-url" target="_blank" rel="noopener"></a></div>
+    <div id="ptabs" class="tabs"></div>
+    <div class="section-label">País</div>
     <div id="tabs" class="tabs"></div>
 
     <!-- LISTA -->
@@ -160,8 +167,8 @@
           <option value="hogar">Hogar y cocina</option>
           <option value="otros">Otros</option>
         </select>
-        <label>Link de Drop <span class="muted">(URL del producto en Drop)</span></label>
-        <input id="f-drop" type="url" inputmode="url" placeholder="https://app.soydrop.com/dropshipping/product/…" autocomplete="off" />
+        <label><span id="lbl-drop">Link del producto</span> <span class="muted">(URL del producto en la plataforma)</span></label>
+        <input id="f-drop" type="url" inputmode="url" placeholder="https://…" autocomplete="off" />
         <label>Foto del producto</label>
         <input id="f-img" type="file" accept="image/*" />
         <img id="f-preview" class="preview-img" hidden alt="" />
@@ -178,7 +185,7 @@
       <div class="modal modal-form">
         <button class="modal-x" id="country-x" aria-label="Cerrar">×</button>
         <h2 style="margin:0 0 4px">Nuevo país</h2>
-        <p class="muted" style="margin:0 0 8px">Se agrega como pestaña en el panel y en el catálogo, con su propia lista de productos.</p>
+        <p class="muted" id="country-hint" style="margin:0 0 8px"></p>
         <label for="c-name">Nombre del país *</label>
         <input id="c-name" type="text" placeholder="Ej.: El Salvador" autocomplete="off" />
         <label for="c-flag">Bandera <span class="muted">(emoji, opcional)</span></label>
@@ -189,6 +196,25 @@
         <div style="display:flex;gap:10px">
           <button class="btn btn-green" id="c-save">Agregar país</button>
           <button class="btn btn-ghost" id="c-cancel">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NUEVA PLATAFORMA (popup) -->
+    <div class="modal-backdrop" id="platform-view" hidden>
+      <div class="modal modal-form">
+        <button class="modal-x" id="platform-x" aria-label="Cerrar">×</button>
+        <h2 style="margin:0 0 4px">Nueva plataforma</h2>
+        <p class="muted" style="margin:0 0 8px">Tendrá su propio catálogo con su propia dirección web, y sus propios países y productos.</p>
+        <label for="pl-name">Nombre de la plataforma *</label>
+        <input id="pl-name" type="text" placeholder="Ej.: Rocket" autocomplete="off" />
+        <p class="muted" style="margin:6px 0 0">Dirección: <b id="pl-url">…</b></p>
+        <label for="pl-cta">Texto del botón del producto <span class="muted">(opcional)</span></label>
+        <input id="pl-cta" type="text" placeholder="Ver en …" autocomplete="off" />
+        <div style="height:16px"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-green" id="pl-save">Agregar plataforma</button>
+          <button class="btn btn-ghost" id="pl-cancel">Cancelar</button>
         </div>
       </div>
     </div>
@@ -223,14 +249,19 @@
   var BRANCH = "claude/new-session-pm108s";
   var IMG_DIR = "miranova/data/images/";      // ruta en el repositorio
   var IMG_PREFIX = "data/images/";            // ruta guardada en el JSON
-  // Lista de países: vive en miranova/data/countries.json (la lee también el
-  // catálogo). Esta de abajo es solo el respaldo si ese archivo aún no existe.
-  var COUNTRIES_FILE = "miranova/data/countries.json";
-  var DEFAULT_COUNTRIES = [
-    { id:"honduras",   label:"Honduras",   flag:"🇭🇳", currency:"HNL", symbol:"L", productsPath:"data/honduras.json" },
-    { id:"costa-rica", label:"Costa Rica", flag:"🇨🇷", currency:"CRC", symbol:"₡", productsPath:"data/costa-rica.json" },
-    { id:"guatemala",  label:"Guatemala",  flag:"🇬🇹", currency:"GTQ", symbol:"Q", productsPath:"data/guatemala.json" }
+  // Plataformas (SoyDrop, Dropi…): miranova/data/platforms.json. Cada una tiene
+  // su página /<id>/ y su propia lista de países (countriesPath), y cada país
+  // su propio archivo de productos. Todo lo leen también los catálogos.
+  var DATA_ROOT = "miranova/";
+  var PLATFORMS_FILE = DATA_ROOT + "data/platforms.json";
+  var PAGE_TEMPLATE = "soydrop/index.html";   // plantilla para páginas nuevas
+  var RESERVED_IDS = ["admin","miranova","kenku","data","soydrop","dropi","assets","images"];
+  var DEFAULT_PLATFORMS = [
+    { id:"soydrop", label:"SoyDrop", countriesPath:"data/countries.json", ctaText:"Ver en SoyDrop.com" }
   ];
+  var platformList = DEFAULT_PLATFORMS.slice();
+  var platformsSha = null;
+  var platform = platformList[0];
   var CURRENCIES = [
     ["HNL","L","Lempira (Honduras)"], ["CRC","₡","Colón (Costa Rica)"], ["GTQ","Q","Quetzal (Guatemala)"],
     ["USD","$","Dólar (El Salvador, Ecuador, Panamá…)"], ["NIO","C$","Córdoba (Nicaragua)"],
@@ -239,23 +270,22 @@
     ["ARS","$","Peso argentino"], ["BOB","Bs","Boliviano"], ["PYG","₲","Guaraní (Paraguay)"],
     ["UYU","$U","Peso uruguayo"], ["EUR","€","Euro (España)"]
   ];
-  var countryList = DEFAULT_COUNTRIES.slice();   // formato del catálogo
+  var countryList = [];                           // formato del catálogo
   var countriesSha = null;
   var COUNTRIES = [];                             // formato del panel (derivado)
   function syncCountries(){
     COUNTRIES = countryList.map(function(c){
       return { id:c.id, name:c.label, label:(c.flag?c.flag+" ":"")+c.label,
-               file:"miranova/"+c.productsPath, currency:c.currency, sym:c.symbol||c.currency };
+               file:DATA_ROOT+c.productsPath, currency:c.currency, sym:c.symbol||c.currency };
     });
   }
-  syncCountries();
   var API = "https://api.github.com/repos/" + REPO;
   var SITE_IMG_BASE = "../miranova/";  // para previsualizar imágenes existentes desde /admin
 
   var CAT_LABELS = { suplementos:"Suplementos", belleza:"Belleza", hogar:"Hogar y cocina", otros:"Otros" };
   var token = localStorage.getItem("miranova_token") || "";
-  var active = COUNTRIES[0];
-  var state = {};  // por país: { products, sha }
+  var active = null;   // país activo (null si la plataforma aún no tiene países)
+  var state = {};  // por archivo de país: { products, sha }
   var editIndex = -1;
   var delIndex = -1;
   var searchTerm = "";
@@ -326,29 +356,110 @@
   function showLoading(on){ $("loading").hidden = !on; }
 
   function renderTabs(){
+    $("ptabs").innerHTML = platformList.map(function(p){
+      return '<button class="tab" data-pid="'+esc(p.id)+'" aria-pressed="'+(p.id===platform.id)+'">'+esc(p.label)+'</button>';
+    }).join("") + '<button class="tab tab-add" id="add-platform">+ Plataforma</button>';
     $("tabs").innerHTML = COUNTRIES.map(function(c){
-      return '<button class="tab" data-id="'+esc(c.id)+'" aria-pressed="'+(c.id===active.id)+'">'+esc(c.label)+'</button>';
+      return '<button class="tab" data-id="'+esc(c.id)+'" aria-pressed="'+(!!active && c.id===active.id)+'">'+esc(c.label)+'</button>';
     }).join("") + '<button class="tab tab-add" id="add-country">+ País</button>';
+    var url = pageUrl(platform.id);
+    $("view-link").href = "../" + platform.id + "/";
+    $("page-url").href = url; $("page-url").textContent = url.replace(/^https:\/\//, "");
+  }
+  function pageUrl(id){
+    return location.origin + location.pathname.replace(/admin\/?(index\.html)?$/, "") + id + "/";
   }
 
-  /* --------- países --------- */
+  /* --------- plataformas --------- */
+  function countriesFile(){ return DATA_ROOT + platform.countriesPath; }
+  function loadPlatforms(){
+    return getFile(PLATFORMS_FILE).then(function(res){
+      var list = res.json && res.json.platforms;
+      if (Array.isArray(list) && list.length) platformList = list;
+      platformsSha = res.sha;
+      var saved = localStorage.getItem("miranova_platform");
+      platform = platformList.filter(function(p){ return p.id===saved; })[0] || platformList[0];
+    });
+  }
+  // Cambia de plataforma: carga su lista de países y el primer país.
+  function selectPlatform(p){
+    platform = p; active = null; countryList = []; countriesSha = null; syncCountries();
+    try { localStorage.setItem("miranova_platform", p.id); } catch(e){}
+    searchTerm = ""; $("search").value = "";
+    showLoading(true); $("list").innerHTML = ""; renderTabs();
+    return loadCountries().then(function(){ renderTabs(); loadCountry(); })
+      .catch(function(e){ showLoading(false); alert(e.message); });
+  }
+  function openPlatformForm(){
+    $("pl-name").value = ""; $("pl-cta").value = ""; $("pl-url").textContent = "…";
+    $("platform-view").hidden = false; $("pl-name").focus();
+  }
+  function closePlatformForm(){ $("platform-view").hidden = true; }
+  function addPlatform(){
+    var name = $("pl-name").value.trim();
+    if(!name){ alert("Escribe el nombre de la plataforma."); return; }
+    var id = slugify(name);
+    if(platformList.some(function(p){ return p.id===id; })){ alert("Esa plataforma ya existe."); return; }
+    if(RESERVED_IDS.indexOf(id)!==-1){ alert("Ese nombre está reservado; prueba con otro."); return; }
+    var entry = { id:id, label:name, countriesPath:"data/"+id+"/countries.json",
+                  ctaText: $("pl-cta").value.trim() || ("Ver en " + name) };
+    var btn = $("pl-save"); btn.disabled = true; btn.textContent = "Guardando…";
+    function done(){ btn.disabled = false; btn.textContent = "Agregar plataforma"; }
+    // 1) su lista de países (vacía), 2) su página /<id>/ copiando la de
+    // SoyDrop con otra plataforma, 3) la lista de plataformas.
+    var cfile = DATA_ROOT + entry.countriesPath;
+    getFile(cfile).then(function(res){
+      if(res.sha) return;
+      return putFile(cfile, JSON.stringify({ countries: [] }, null, 2) + "\n", null, "admin: crear plataforma " + name);
+    }).then(function(){
+      return gh("/contents/" + id + "/index.html?ref=" + encodeURIComponent(BRANCH)).then(function(r){
+        if(r.ok) return;
+        return getRaw(PAGE_TEMPLATE).then(function(html){
+          html = html.replace('CATALOG_PLATFORM = "soydrop"', 'CATALOG_PLATFORM = "' + id + '"')
+                     .replace('/soydrop/"', '/' + id + '/"');
+          return putFile(id + "/index.html", html, null, "admin: página de " + name);
+        });
+      });
+    }).then(function(){
+      return savePlatforms(platformList.concat([entry]), "admin: agregar plataforma " + name);
+    }).then(function(){
+      done(); closePlatformForm();
+      selectPlatform(platformList.filter(function(p){ return p.id===id; })[0]);
+      toast("✅ Plataforma agregada. Su página estará lista en ~1 minuto.");
+    }).catch(function(e){ done(); alert("Error: "+e.message); });
+  }
+  function savePlatforms(list, message){
+    var contentStr = JSON.stringify({ platforms: list }, null, 2) + "\n";
+    return putFile(PLATFORMS_FILE, contentStr, platformsSha, message).then(function(resp){
+      platformList = list; platformsSha = resp.content.sha;
+    });
+  }
+  function getRaw(repoPath){
+    return gh("/contents/" + repoPath + "?ref=" + encodeURIComponent(BRANCH)).then(function(r){
+      if (!r.ok) throw new Error("No se pudo leer " + repoPath + " (" + r.status + ")");
+      return r.json().then(function(d){ return b64DecodeUtf8(d.content); });
+    });
+  }
+
+  /* --------- países (de la plataforma activa) --------- */
   function loadCountries(){
-    return getFile(COUNTRIES_FILE).then(function(res){
+    return getFile(countriesFile()).then(function(res){
       var list = res.json && res.json.countries;
-      if (Array.isArray(list) && list.length) countryList = list;
+      countryList = Array.isArray(list) ? list : [];
       countriesSha = res.sha;
       syncCountries();
-      active = COUNTRIES.filter(function(c){ return c.id===active.id; })[0] || COUNTRIES[0];
+      active = COUNTRIES.filter(function(c){ return active && c.id===active.id; })[0] || COUNTRIES[0] || null;
     });
   }
   function saveCountries(list, message){
     var contentStr = JSON.stringify({ countries: list }, null, 2) + "\n";
-    return putFile(COUNTRIES_FILE, contentStr, countriesSha, message).then(function(resp){
+    return putFile(countriesFile(), contentStr, countriesSha, message).then(function(resp){
       countryList = list; countriesSha = resp.content.sha; syncCountries();
     });
   }
   function openCountryForm(){
     $("c-name").value = ""; $("c-flag").value = ""; $("c-cur").value = "USD";
+    $("country-hint").textContent = "Se agrega al catálogo de " + platform.label + ", con su propia lista de productos.";
     $("country-view").hidden = false; $("c-name").focus();
   }
   function closeCountryForm(){ $("country-view").hidden = true; }
@@ -356,19 +467,23 @@
     var name = $("c-name").value.trim();
     if(!name){ alert("Escribe el nombre del país."); return; }
     var id = slugify(name);
-    if(COUNTRIES.some(function(c){ return c.id===id; })){ alert("Ese país ya existe."); return; }
+    if(COUNTRIES.some(function(c){ return c.id===id; })){ alert("Ese país ya existe en " + platform.label + "."); return; }
     var cur = CURRENCIES.filter(function(x){ return x[0]===$("c-cur").value; })[0];
+    // Los países van junto a la lista de la plataforma: data/<país>.json en
+    // SoyDrop, data/dropi/<país>.json en Dropi, etc.
+    var dir = platform.countriesPath.replace(/[^\/]*$/, "");
     var entry = { id:id, label:name, flag:$("c-flag").value.trim(), currency:cur[0], symbol:cur[1],
-                  productsPath:"data/"+id+".json" };
+                  productsPath: dir + id + ".json" };
     var btn = $("c-save"); btn.disabled = true; btn.textContent = "Guardando…";
     function done(){ btn.disabled = false; btn.textContent = "Agregar país"; }
+    var pfile = DATA_ROOT + entry.productsPath;
     // 1) archivo de productos vacío (si no existe), 2) lista de países.
-    getFile("miranova/"+entry.productsPath).then(function(res){
+    getFile(pfile).then(function(res){
       if(res.sha) return;
-      return putFile("miranova/"+entry.productsPath, JSON.stringify({ products: [] }, null, 2) + "\n",
-                     null, "admin: crear catálogo de " + name);
+      return putFile(pfile, JSON.stringify({ products: [] }, null, 2) + "\n",
+                     null, "admin: crear catálogo de " + name + " (" + platform.label + ")");
     }).then(function(){
-      return saveCountries(countryList.concat([entry]), "admin: agregar país " + name);
+      return saveCountries(countryList.concat([entry]), "admin: agregar país " + name + " (" + platform.label + ")");
     }).then(function(){
       done(); closeCountryForm();
       active = COUNTRIES.filter(function(c){ return c.id===id; })[0];
@@ -379,13 +494,12 @@
   }
   // Solo se ofrece con el país vacío; su archivo de productos se conserva.
   function removeCountry(){
-    if(COUNTRIES.length<=1){ alert("Debe quedar al menos un país."); return; }
-    if(!confirm("¿Quitar " + active.name + " del catálogo?")) return;
+    if(!confirm("¿Quitar " + active.name + " del catálogo de " + platform.label + "?")) return;
     var id = active.id;
     showLoading(true);
-    saveCountries(countryList.filter(function(c){ return c.id!==id; }), "admin: quitar país " + active.name)
+    saveCountries(countryList.filter(function(c){ return c.id!==id; }), "admin: quitar país " + active.name + " (" + platform.label + ")")
       .then(function(){
-        showLoading(false); active = COUNTRIES[0];
+        showLoading(false); active = COUNTRIES[0] || null;
         renderTabs(); loadCountry(); toast("País quitado.");
       }).catch(function(e){ showLoading(false); alert("Error: "+e.message); });
   }
@@ -393,12 +507,18 @@
   function fmt(n, sym){ if(n==null||n==="") return ""; return sym+" "+Number(n).toLocaleString("es"); }
 
   function renderList(){
-    var st = state[active.id] || { products:[] };
+    $("add-btn").hidden = $("search").hidden = !active;
+    if(!active){
+      $("count").textContent = "";
+      $("list").innerHTML = '<p class="muted">'+esc(platform.label)+' aún no tiene países. Toca “+ País” para agregar el primero.</p>';
+      return;
+    }
+    var st = state[active.file] || { products:[] };
     var ps = st.products || [];
     $("count").textContent = ps.length + (ps.length===1?" producto":" productos");
     if(!ps.length){
       $("list").innerHTML = '<p class="muted">Aún no hay productos en '+esc(active.label)+'. Toca “Agregar producto”.</p>'+
-        (COUNTRIES.length>1 ? '<button class="btn btn-danger" id="remove-country">Quitar este país</button>' : '');
+        '<button class="btn btn-danger" id="remove-country">Quitar este país</button>';
       return;
     }
     // Filtro de búsqueda (mantiene el índice real con data-edit/data-del)
@@ -414,7 +534,7 @@
         (img?'<img src="'+img+'" alt="" onerror="this.style.visibility=\'hidden\'">':'<div style="width:60px;height:60px;border-radius:10px;background:#eee;flex:0 0 auto"></div>')+
         '<div class="info"><div class="name">'+esc(p.title||"(sin título)")+'</div>'+
         '<div class="meta">'+cat+
-          (p.boxville?'<a class="drop-link" href="'+esc(p.boxville)+'" target="_blank" rel="noopener">🔗 Ver en Drop</a>':'<span class="drop-missing">sin link de Drop</span>')+
+          (p.boxville?'<a class="drop-link" href="'+esc(p.boxville)+'" target="_blank" rel="noopener">🔗 Ver en '+esc(platform.label)+'</a>':'<span class="drop-missing">sin link de '+esc(platform.label)+'</span>')+
         '</div>'+
         '<div class="prices">'+
           '<div class="prow"><span class="plabel">Precio proveedor:</span> <b>'+esc(fmt(p.providerPrice,active.sym))+'</b></div>'+
@@ -430,11 +550,12 @@
   function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 
   function loadCountry(){
+    if(!active){ showLoading(false); renderList(); return Promise.resolve(); }
     showLoading(true); $("list").innerHTML="";
     return getFile(active.file).then(function(res){
       var obj = res.json;
       var products = Array.isArray(obj) ? obj : (obj.products || []);
-      state[active.id] = { products: products, sha: res.sha };
+      state[active.file] = { products: products, sha: res.sha };
       showLoading(false); renderList();
     }).catch(function(e){ showLoading(false); alert(e.message); });
   }
@@ -442,9 +563,10 @@
   function openForm(index){
     editIndex = (index==null?-1:index);
     pendingImageDataUrl = null;
-    var p = editIndex>=0 ? state[active.id].products[editIndex] : {};
+    var p = editIndex>=0 ? state[active.file].products[editIndex] : {};
     $("form-title").textContent = editIndex>=0 ? "Editar producto" : "Nuevo producto";
-    $("form-country").textContent = active.label + " · precios en " + active.sym;
+    $("form-country").textContent = platform.label + " · " + active.label + " · precios en " + active.sym;
+    $("lbl-drop").textContent = "Link en " + platform.label;
     $("lbl-prov").textContent = "("+active.sym+")"; $("lbl-sug").textContent = "("+active.sym+")";
     $("f-title").value = p.title||""; $("f-desc").value = p.description||"";
     $("f-prov").value = p.providerPrice!=null?p.providerPrice:""; $("f-sug").value = p.suggestedPrice!=null?p.suggestedPrice:"";
@@ -480,7 +602,7 @@
     };
     var drop = $("f-drop").value.trim();
     if(drop) prod.boxville = drop;
-    var existing = editIndex>=0 ? state[active.id].products[editIndex] : null;
+    var existing = editIndex>=0 ? state[active.file].products[editIndex] : null;
     if(existing && existing.image) prod.image = existing.image;
 
     var imgFile = $("f-img").files[0];
@@ -490,7 +612,7 @@
 
     var step = Promise.resolve();
     if(imgFile){
-      var fname = active.id + "-" + slugify(title) + "-" + Date.now().toString(36) + ".jpg";
+      var fname = (platform.id==="soydrop" ? "" : platform.id + "-") + active.id + "-" + slugify(title) + "-" + Date.now().toString(36) + ".jpg";
       step = fileToBase64(imgFile).then(function(b64){
         return putImage(IMG_DIR + fname, b64, "admin: foto " + title).then(function(){
           prod.image = IMG_PREFIX + fname;
@@ -499,11 +621,11 @@
     }
 
     step.then(function(){
-      var st = state[active.id];
+      var st = state[active.file];
       var products = st.products.slice();
       if(editIndex>=0) products[editIndex]=prod; else products.push(prod);
       var contentStr = JSON.stringify({ products: products }, null, 2) + "\n";
-      var msg = (editIndex>=0?"admin: editar ":"admin: agregar ") + title + " ("+active.id+")";
+      var msg = (editIndex>=0?"admin: editar ":"admin: agregar ") + title + " ("+platform.id+"/"+active.id+")";
       return putFile(active.file, contentStr, st.sha, msg).then(function(resp){
         st.products = products; st.sha = resp.content.sha;
       });
@@ -516,7 +638,7 @@
   // Paso 1: abrir el popup de confirmación (no borra nada todavía).
   function askDelete(index){
     delIndex = index;
-    var p = state[active.id].products[index];
+    var p = state[active.file].products[index];
     $("del-name").textContent = "“" + (p.title || "este producto") + "”";
     $("del-modal").hidden = false;
   }
@@ -526,12 +648,12 @@
   function confirmDelete(){
     if(delIndex < 0) return;
     var index = delIndex; closeDelModal();
-    var st = state[active.id];
+    var st = state[active.file];
     var p = st.products[index];
     showLoading(true);
     var products = st.products.slice(); products.splice(index,1);
     var contentStr = JSON.stringify({ products: products }, null, 2) + "\n";
-    putFile(active.file, contentStr, st.sha, "admin: eliminar "+(p.title||"producto")+" ("+active.id+")").then(function(resp){
+    putFile(active.file, contentStr, st.sha, "admin: eliminar "+(p.title||"producto")+" ("+platform.id+"/"+active.id+")").then(function(resp){
       st.products = products; st.sha = resp.content.sha;
       showLoading(false); renderList(); toast("Producto eliminado.");
     }).catch(function(e){ showLoading(false); alert("Error: "+e.message); });
@@ -541,8 +663,8 @@
   function showApp(){
     $("login").hidden=true; $("app").hidden=false;
     showLoading(true);
-    loadCountries().catch(function(){ /* sin countries.json: se usa la lista por defecto */ })
-      .then(function(){ renderTabs(); loadCountry(); });
+    loadPlatforms().catch(function(){ /* sin platforms.json: solo SoyDrop */ })
+      .then(function(){ selectPlatform(platform); });
   }
   function tryLogin(tok){
     return fetch(API, { headers:{ "Authorization":"Bearer "+tok, "Accept":"application/vnd.github+json" } })
@@ -562,6 +684,12 @@
   $("token").addEventListener("keydown", function(e){ if(e.key==="Enter") $("login-btn").click(); });
   $("logout").addEventListener("click", function(){
     localStorage.removeItem("miranova_token"); token=""; location.reload();
+  });
+  $("ptabs").addEventListener("click", function(e){
+    if(e.target.closest("#add-platform")){ openPlatformForm(); return; }
+    var b=e.target.closest(".tab"); if(!b) return;
+    var id=b.getAttribute("data-pid"); if(id===platform.id) return;
+    closeForm(); selectPlatform(platformList.filter(function(p){ return p.id===id; })[0]);
   });
   $("tabs").addEventListener("click", function(e){
     if(e.target.closest("#add-country")){ openCountryForm(); return; }
@@ -590,12 +718,21 @@
     return '<option value="'+x[0]+'">'+esc(x[1]+" · "+x[2])+'</option>';
   }).join("");
   $("c-save").addEventListener("click", addCountry);
+  $("pl-save").addEventListener("click", addPlatform);
+  $("pl-cancel").addEventListener("click", closePlatformForm);
+  $("platform-x").addEventListener("click", closePlatformForm);
+  $("platform-view").addEventListener("click", function(e){ if(e.target===this) closePlatformForm(); });
+  $("pl-name").addEventListener("input", function(){
+    var v=this.value.trim(); $("pl-url").textContent = v ? pageUrl(slugify(v)).replace(/^https?:\/\//,"") : "…";
+    $("pl-cta").placeholder = "Ver en " + (v || "…");
+  });
   $("c-cancel").addEventListener("click", closeCountryForm);
   $("country-x").addEventListener("click", closeCountryForm);
   $("country-view").addEventListener("click", function(e){ if(e.target===this) closeCountryForm(); });
   document.addEventListener("keydown", function(e){
     if(e.key!=="Escape") return;
-    if(!$("country-view").hidden) closeCountryForm();
+    if(!$("platform-view").hidden) closePlatformForm();
+    else if(!$("country-view").hidden) closeCountryForm();
     else if(!$("del-modal").hidden) closeDelModal();
     else if(!$("form-view").hidden) closeForm();
   });

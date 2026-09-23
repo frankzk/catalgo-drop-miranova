@@ -1,0 +1,16 @@
+{
+  "platforms": [
+    {
+      "id": "soydrop",
+      "label": "SoyDrop",
+      "countriesPath": "data/countries.json",
+      "ctaText": "Ver en SoyDrop.com"
+    },
+    {
+      "id": "dropi",
+      "label": "Dropi",
+      "countriesPath": "data/dropi/countries.json",
+      "ctaText": "Ver en Dropi"
+    }
+  ]
+}

@@ -300,11 +300,19 @@
     };
   }
 
+  // Rutas de datos relativas a CFG.basePath (p. ej. "../miranova/"), para que
+  // varias páginas (una por plataforma) compartan la misma carpeta de datos.
+  function withBase(u) {
+    if (!u || !CFG.basePath || /^([a-z]+:|\/|\.\.?\/)/i.test(u)) return u;
+    return CFG.basePath + u;
+  }
+
   // Cache-busting para imágenes locales (no aplica a data: URIs del preview).
   function bustUrl(u) {
     if (!u || /^data:/.test(u)) return u;
     // El panel /admin puede guardar la ruta con "/" inicial; la hacemos relativa.
     if (u.charAt(0) === "/" && u.charAt(1) !== "/") u = u.slice(1);
+    u = withBase(u);
     var v = CFG.imageVersion;
     return v ? (u + (u.indexOf("?") > -1 ? "&" : "?") + "v=" + v) : u;
   }
@@ -727,7 +735,7 @@
       finishLoad(c.products.map(normalizeStatic));
       return;
     }
-    var path = c.productsPath;
+    var path = withBase(c.productsPath);
     fetch(path, { cache: "no-cache" })
       .then(function (r) {
         if (!r.ok) throw new Error("No se pudo leer " + path + " (" + r.status + ")");
@@ -817,11 +825,40 @@
 
   // Modo estático: lee productos desde un JSON local (sin Shopify).
   function startStatic() {
+    // Catálogo por plataforma: la página declara window.CATALOG_PLATFORM y
+    // data/platforms.json dice dónde está su lista de países y su botón.
+    var platformId = window.CATALOG_PLATFORM;
+    if (platformId && !CFG._platformLoaded) {
+      CFG._platformLoaded = true;
+      fetch(withBase("data/platforms.json"), { cache: "no-cache" })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .catch(function () { return null; })
+        .then(function (data) {
+          var list = (data && data.platforms) || [];
+          var p = list.filter(function (x) { return x.id === platformId; })[0];
+          if (p) {
+            CFG.countriesPath = p.countriesPath;
+            if (p.ctaText) CFG.ctaText = p.ctaText;
+            CFG.pageTitle = (CFG.pageTitle || CFG.storeName || "Catálogo") + " · " + p.label;
+            CFG.subtitle = (CFG.subtitle || "Proveedor dropshipping") + " · " + p.label;
+            renderHeader();
+          }
+          // El respaldo de config.js (CFG.countries) es de SoyDrop: otra
+          // plataforma sin lista legible no debe mostrar esos productos.
+          if (platformId !== "soydrop") CFG.countries = [];
+          if (!p && platformId !== "soydrop") {
+            loadError(new Error("Plataforma no encontrada: " + platformId));
+            return;
+          }
+          startStatic();
+        });
+      return;
+    }
     // Si hay CFG.countriesPath, la lista de países sale de ese JSON (editable
     // desde el panel). Si falla, se usa CFG.countries de config.js.
     if (CFG.countriesPath && !CFG._countriesLoaded) {
       CFG._countriesLoaded = true;
-      fetch(CFG.countriesPath, { cache: "no-cache" })
+      fetch(withBase(CFG.countriesPath), { cache: "no-cache" })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (data) {
           var list = data && (Array.isArray(data) ? data : data.countries);
@@ -843,6 +880,14 @@
     if (cs) {
       renderCountryTabs();
       selectCountry(activeCountry || cs[0]);
+      return;
+    }
+    // Plataforma que aún no tiene países cargados.
+    if (platformId) {
+      if (elCountries) elCountries.hidden = true;
+      elStatus.hidden = false;
+      elStatus.className = "status";
+      elStatus.textContent = "Catálogo en preparación. ¡Pronto disponible!";
       return;
     }
     // Si los productos vienen embebidos en config (CFG.products), úsalos

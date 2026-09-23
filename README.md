@@ -23,10 +23,18 @@ token público de solo lectura. Todo se configura por tienda en un único `confi
 ├─ .github/workflows/
 │   └─ deploy-pages.yml   ← auto-deploy a GitHub Pages en cada push a main
 │
-├─ miranova/              ← TIENDA 1 (principal)
-│   ├─ index.html         ← referencia ../app.js y ../styles.css
+├─ miranova/              ← TIENDA 1 (principal): marca, config y TODOS los datos
+│   ├─ index.html         ← catálogo de SoyDrop (link antiguo, se mantiene)
 │   ├─ config.js          ← TODO lo de esta tienda se edita aquí
-│   └─ data/boxville.json ← respaldo opcional (boxvilleSource:"list")
+│   └─ data/
+│       ├─ platforms.json ← plataformas (SoyDrop, Dropi…) — se edita desde /admin
+│       ├─ countries.json ← países de SoyDrop; sus productos en data/<país>.json
+│       ├─ dropi/         ← países (countries.json) y productos de Dropi
+│       └─ images/        ← fotos de todos los productos
+│
+├─ soydrop/, dropi/, …    ← una página por plataforma (misma plantilla; solo
+│                            cambia window.CATALOG_PLATFORM). El panel crea
+│                            las nuevas con "+ Plataforma".
 │
 └─ kenku/                 ← TIENDA 2 (segundo ejemplo)
     ├─ index.html

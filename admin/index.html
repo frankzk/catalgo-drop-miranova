@@ -22,7 +22,7 @@
   .btn-green{background:var(--green);color:#fff}
   .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--text)}
   .btn-danger{background:#fff;border:1px solid #f0c4c4;color:#c0392b}
-  main{max-width:780px;margin:0 auto;padding:16px}
+  main{max-width:1000px;margin:0 auto;padding:16px}
   .tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
   .tab{flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:8px 14px;
        font-weight:700;font-size:14px;white-space:nowrap}
@@ -32,13 +32,18 @@
        color:var(--muted);margin:0 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
   .page-url{text-transform:none;letter-spacing:0;font-weight:600;color:#1d6ad6;text-decoration:none;
        overflow-wrap:anywhere}
-  .row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
-       border-radius:var(--radius);padding:10px;margin-bottom:10px}
-  .row img{width:60px;height:60px;border-radius:10px;object-fit:cover;background:#eee;flex:0 0 auto}
-  .row .info{flex:1;min-width:0}
-  .row .name{font-weight:700;font-size:14px;line-height:1.3}
-  .row .meta{color:var(--muted);font-size:12.5px;margin-top:2px}
-  .row .acts{display:flex;gap:6px;flex:0 0 auto}
+  /* Productos en tarjetas tipo Pinterest: columnas de ≥230px, máximo 3 */
+  #list.masonry{columns:230px 3;column-gap:14px}
+  .pcard{break-inside:avoid;display:inline-block;width:100%;margin-bottom:14px;background:var(--card);
+       border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+  .pcard .thumb{display:block;width:100%;height:auto;background:#eee}
+  .pcard .nophoto{aspect-ratio:1/1;display:grid;place-items:center;background:#f0f1f4;color:var(--muted);
+       font-size:13px;font-weight:700}
+  .pcard .info{padding:12px 12px 10px}
+  .pcard .name{font-weight:700;font-size:14px;line-height:1.3}
+  .pcard .meta{color:var(--muted);font-size:12.5px;margin-top:6px}
+  .pcard .acts{display:flex;gap:6px;padding:0 12px 12px}
+  .pcard .acts .icon-btn:first-child{flex:1}
   .icon-btn{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 10px;font-size:13px;font-weight:700}
   label{display:block;font-size:13px;font-weight:700;margin:12px 0 5px}
   input,textarea,select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px;font-size:15px;
@@ -68,7 +73,7 @@
   /* Buscador */
   .admin-search{margin-bottom:14px}
   /* Chip de categoría en cada fila */
-  .row .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .pcard .meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
   .cat{display:inline-block;background:#f0f1f4;color:#555;border-radius:999px;
        padding:2px 9px;font-size:11px;font-weight:700}
   .drop-link{display:inline-block;color:#1d6ad6;font-weight:700;font-size:11.5px;text-decoration:none;
@@ -507,6 +512,7 @@
   function fmt(n, sym){ if(n==null||n==="") return ""; return sym+" "+Number(n).toLocaleString("es"); }
 
   function renderList(){
+    $("list").className = "";
     $("add-btn").hidden = $("search").hidden = !active;
     if(!active){
       $("count").textContent = "";
@@ -526,12 +532,16 @@
     var rows = ps.map(function(p,i){ return { p:p, i:i }; })
       .filter(function(o){ return !q || (o.p.title||"").toLowerCase().indexOf(q) !== -1; });
     if(!rows.length){ $("list").innerHTML = '<p class="muted">No hay productos que coincidan con la búsqueda.</p>'; return; }
+    $("list").className = "masonry";
     $("list").innerHTML = rows.map(function(o){
       var p=o.p, i=o.i;
       var img = p.image ? (SITE_IMG_BASE + p.image) : "";
       var cat = p.category ? '<span class="cat">'+esc(CAT_LABELS[p.category]||p.category)+'</span>' : "";
-      return '<div class="row">'+
-        (img?'<img src="'+img+'" alt="" onerror="this.style.visibility=\'hidden\'">':'<div style="width:60px;height:60px;border-radius:10px;background:#eee;flex:0 0 auto"></div>')+
+      // Foto a ancho completo con su proporción real (efecto Pinterest).
+      return '<div class="pcard">'+
+        (img?'<img class="thumb" src="'+esc(img)+'" alt="" loading="lazy" onerror="this.hidden=true;this.nextSibling.hidden=false">'+
+             '<div class="nophoto" hidden>Sin foto</div>'
+            :'<div class="nophoto">Sin foto</div>')+
         '<div class="info"><div class="name">'+esc(p.title||"(sin título)")+'</div>'+
         '<div class="meta">'+cat+
           (p.boxville?'<a class="drop-link" href="'+esc(p.boxville)+'" target="_blank" rel="noopener">🔗 Ver en '+esc(platform.label)+'</a>':'<span class="drop-missing">sin link de '+esc(platform.label)+'</span>')+

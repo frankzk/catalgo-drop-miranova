@@ -1,3 +1,20 @@
 {
-  "countries": []
+  "countries": [
+    {
+      "id": "guatemala",
+      "label": "Guatemala",
+      "flag": "🇬🇹",
+      "currency": "GTQ",
+      "symbol": "Q",
+      "productsPath": "data/dropi/guatemala.json"
+    },
+    {
+      "id": "costa-rica",
+      "label": "Costa Rica",
+      "flag": "🇨🇷",
+      "currency": "CRC",
+      "symbol": "₡",
+      "productsPath": "data/dropi/costa-rica.json"
+    }
+  ]
 }

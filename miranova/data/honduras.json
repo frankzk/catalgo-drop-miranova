@@ -439,6 +439,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6a4590912e57db91cb5e9104",
       "image": "data/images/honduras-nad-mens-complex-x2-energia-rendimiento--muek9apu.jpg"
+    },
+    {
+      "title": "Magnesio Complex y Creatina - Kit Fuerza Recuperación Total",
+      "description": "Impulsa tu rendimiento desde el primer día. El Kit Fuerza & Recuperación Total combina Creatina Monohidratada y Magnesium Complex para aumentar la fuerza, acelerar la recuperación muscular, mejorar el descanso y reducir la fatiga",
+      "category": "suplementos",
+      "providerPrice": 486,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6a467da8b5a46c5d36071e51",
+      "image": "data/images/honduras-magnesio-complex-y-creatina-kit-fuerza-r-muekbr2g.jpg"
     }
   ]
 }

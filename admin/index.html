@@ -32,8 +32,12 @@
        color:var(--muted);margin:0 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
   .page-url{text-transform:none;letter-spacing:0;font-weight:600;color:#1d6ad6;text-decoration:none;
        overflow-wrap:anywhere}
-  /* Productos en tarjetas tipo Pinterest: columnas de ≥200px, máximo 5 */
-  #list.masonry{columns:200px 5;column-gap:14px}
+  /* Productos en tarjetas tipo Pinterest: 2 columnas en el teléfono, hasta 5
+     (mismos cortes que el catálogo público, styles.css .grid) */
+  #list.masonry{columns:2;column-gap:12px}
+  @media (min-width:700px){ #list.masonry{columns:3;column-gap:14px} }
+  @media (min-width:1000px){ #list.masonry{columns:4} }
+  @media (min-width:1250px){ #list.masonry{columns:5} }
   .pcard{break-inside:avoid;display:inline-block;width:100%;margin-bottom:14px;background:var(--card);
        border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
   .pcard .thumb{display:block;width:100%;height:auto;background:#eee}

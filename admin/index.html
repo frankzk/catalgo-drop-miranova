@@ -32,13 +32,13 @@
        color:var(--muted);margin:0 0 6px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
   .page-url{text-transform:none;letter-spacing:0;font-weight:600;color:#1d6ad6;text-decoration:none;
        overflow-wrap:anywhere}
-  /* Productos en tarjetas tipo Pinterest: 2 columnas en el teléfono, hasta 5
-     (mismos cortes que el catálogo público, styles.css .grid) */
-  #list.masonry{columns:2;column-gap:12px}
-  @media (min-width:700px){ #list.masonry{columns:3;column-gap:14px} }
-  @media (min-width:1000px){ #list.masonry{columns:4} }
-  @media (min-width:1250px){ #list.masonry{columns:5} }
-  .pcard{break-inside:avoid;display:inline-block;width:100%;margin-bottom:14px;background:var(--card);
+  /* Productos en tarjetas tipo Pinterest: renderList() las reparte en columnas
+     (2 en el teléfono, 3 desde 700px, 4 desde 1000px, 5 desde 1250px: mismos
+     cortes que el catálogo público) */
+  #list.masonry{display:flex;align-items:flex-start;gap:12px}
+  .mcol{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:12px}
+  @media (min-width:700px){ #list.masonry,.mcol{gap:14px} }
+  .pcard{background:var(--card);
        border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
   .pcard .thumb{display:block;width:100%;height:auto;background:#eee}
   .pcard .nophoto{aspect-ratio:1/1;display:grid;place-items:center;background:#f0f1f4;color:var(--muted);
@@ -537,7 +537,7 @@
       .filter(function(o){ return !q || (o.p.title||"").toLowerCase().indexOf(q) !== -1; });
     if(!rows.length){ $("list").innerHTML = '<p class="muted">No hay productos que coincidan con la búsqueda.</p>'; return; }
     $("list").className = "masonry";
-    $("list").innerHTML = rows.map(function(o){
+    var cards = rows.map(function(o){
       var p=o.p, i=o.i;
       var img = p.image ? (SITE_IMG_BASE + p.image) : "";
       var cat = p.category ? '<span class="cat">'+esc(CAT_LABELS[p.category]||p.category)+'</span>' : "";
@@ -559,8 +559,21 @@
           '<button class="icon-btn" data-edit="'+i+'">Editar</button>'+
           '<button class="icon-btn" data-del="'+i+'" aria-label="Eliminar">🗑</button>'+
         '</div></div>';
-    }).join("");
+    });
+    // Reparto de izquierda a derecha en columnas: ninguna queda vacía.
+    var n = listCols = gridColumns(), cols = [];
+    for(var c=0;c<n;c++) cols.push([]);
+    cards.forEach(function(h,k){ cols[k%n].push(h); });
+    $("list").innerHTML = cols.map(function(col){ return '<div class="mcol">'+col.join("")+'</div>'; }).join("");
   }
+  function gridColumns(){
+    var w = window.innerWidth;
+    return w>=1250 ? 5 : w>=1000 ? 4 : w>=700 ? 3 : 2;
+  }
+  var listCols = 0;
+  window.addEventListener("resize", function(){
+    if(listCols && gridColumns()!==listCols && $("list").className==="masonry") renderList();
+  });
   function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];}); }
 
   function loadCountry(){

@@ -466,6 +466,13 @@
     el.hidden = !n;
   }
 
+  // Columnas de la grilla (mismos cortes que styles.css y el panel /admin).
+  function gridColumns() {
+    var w = window.innerWidth;
+    return w >= 1250 ? 5 : w >= 1000 ? 4 : w >= 700 ? 3 : 2;
+  }
+  var renderedCols = 0;
+
   function renderGrid() {
     var list = currentList();
     updateCount(list.length);
@@ -477,10 +484,20 @@
       return;
     }
     elStatus.hidden = true;
-    elGrid.innerHTML = list.map(function (p) {
-      return cardHtml(p, ALL.indexOf(p));
+    // Reparto en columnas de izquierda a derecha (1ª tarjeta en la 1ª
+    // columna, 2ª en la 2ª…): el orden se lee por filas y ninguna columna
+    // queda vacía aunque haya pocos productos.
+    var n = renderedCols = gridColumns();
+    var cols = [];
+    for (var c = 0; c < n; c++) cols.push([]);
+    list.forEach(function (p, i) { cols[i % n].push(cardHtml(p, ALL.indexOf(p))); });
+    elGrid.innerHTML = cols.map(function (col) {
+      return '<div class="grid-col">' + col.join("") + "</div>";
     }).join("");
   }
+  window.addEventListener("resize", function () {
+    if (renderedCols && gridColumns() !== renderedCols && elGrid.firstChild) renderGrid();
+  });
 
   function renderChips() {
     var counts = {};

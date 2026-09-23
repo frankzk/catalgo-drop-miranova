@@ -224,15 +224,22 @@ main {
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Tarjetas tipo Pinterest (mismo estilo que el panel /admin): columnas con
-   la foto en su proporción real. 2 en el teléfono, hasta 5 en pantallas grandes. */
+/* Tarjetas tipo Pinterest (mismo estilo que el panel /admin): la foto en su
+   proporción real. app.js reparte las tarjetas en columnas (.grid-col): 2 en
+   el teléfono, 3 desde 700px, 4 desde 1000px y 5 desde 1250px. */
 .grid {
-  columns: 2;
-  column-gap: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
 }
-@media (min-width: 700px)  { .grid { columns: 3; column-gap: 14px; } }
-@media (min-width: 1000px) { .grid { columns: 4; } }
-@media (min-width: 1250px) { .grid { columns: 5; } }
+.grid-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+@media (min-width: 700px) { .grid, .grid-col { gap: 14px; } }
 
 /* Tarjeta */
 .card {
@@ -240,11 +247,7 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   overflow: hidden;
-  display: inline-flex;          /* inline: no se parte entre columnas */
-  width: 100%;
-  vertical-align: top;
-  margin: 0 0 12px;
-  break-inside: avoid;
+  display: flex;
   flex-direction: column;
   box-shadow: var(--shadow);
   transition: transform .12s ease, box-shadow .12s ease;

@@ -1,3 +1,14 @@
 {
-  "products": []
+  "products": [
+    {
+      "title": "Pulsera Magnética de Cobre Con Cristales Verdes Pulsera Magnética de Cobre Con Cristales Ver",
+      "description": "Se ve de joyería fina, sin complicarte: El tono oro rosa y los cristales incrustados dan un acabado elegante que luce más…\n\n\nCómoda para llevarla todo el día: El diseño de eslabones suaves y el interior liso con imanes discretos hacen que se sienta…\n\n\nUna pieza versátil que va con todo: Su diseño de tréboles delicados destaca lo justo: combina con reloj metálico, pulseras finas",
+      "category": "belleza",
+      "providerPrice": 14.87,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6a9dc817788a577769dfe7a1",
+      "image": "data/images/sn-el-salvador-pulsera-magnetica-de-cobre-con-cristales-muflytoe.jpg"
+    }
+  ]
 }

@@ -23,6 +23,14 @@
       "currency": "GTQ",
       "symbol": "Q",
       "productsPath": "data/guatemala.json"
+    },
+    {
+      "id": "sn-el-salvador",
+      "label": "SN El Salvador",
+      "flag": "",
+      "currency": "USD",
+      "symbol": "$",
+      "productsPath": "data/sn-el-salvador.json"
     }
   ]
 }

@@ -599,6 +599,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6ada8c26f93e425f7039dcd4",
       "image": "data/images/honduras-evil-goods-x3-whipped-tallow-honey-balm-mvk3wasp.jpg"
+    },
+    {
+      "title": "Complejo B x2 – Super Human",
+      "description": "Dale un impulso a tu rutina diaria.Este pack de 2 unidades combina vitaminas B12, B6 y B1, además de niacina y folato, que contribuyen al metabolismo energético y al funcionamiento normal del sistema nervioso.",
+      "category": "suplementos",
+      "providerPrice": 446,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6ada8d31f93e425f7039df9a",
+      "image": "data/images/honduras-complejo-b-x2-super-human-mvk430z5.jpg"
     }
   ]
 }

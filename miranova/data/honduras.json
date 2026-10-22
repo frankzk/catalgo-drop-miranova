@@ -609,6 +609,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6ada8d31f93e425f7039df9a",
       "image": "data/images/honduras-complejo-b-x2-super-human-mvk430z5.jpg"
+    },
+    {
+      "title": "Complejo B x3 – Super Human",
+      "description": "Más vitaminas para complementar tu bienestar diario.Este pack de 3 unidades contiene vitaminas B1, B6 y B12, además de niacina y folato, que contribuyen al metabolismo energético y al funcionamiento normal del sistema nervioso.",
+      "category": "suplementos",
+      "providerPrice": 659,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6ada8d8ef93e425f7039dfa1",
+      "image": "data/images/honduras-complejo-b-x3-super-human-mvk44pjd.jpg"
     }
   ]
 }

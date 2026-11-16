@@ -199,6 +199,16 @@
       "currency": "USD",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb3daf1ec69cdc7493ed57",
       "image": "data/images/sn-el-salvador-mullein-drops-extracto-liquido-de-gordol-mwjtw9z8.jpg"
+    },
+    {
+      "title": "Rosabella Moringa 60 Cápsulas",
+      "description": "Complemento alimenticio elaborado a base de moringa, una planta reconocida por su contenido de nutrientes y compuestos antioxidantes. Ideal para complementar tu alimentación y apoyar tu bienestar diario.",
+      "category": "suplementos",
+      "providerPrice": 8.4,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb3bfe1ec69cdc7493e7ce",
+      "image": "data/images/sn-el-salvador-rosabella-moringa-60-capsulas-mwju0nx0.jpg"
     }
   ]
 }

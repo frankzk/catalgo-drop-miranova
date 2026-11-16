@@ -669,6 +669,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af891a01ec69cdc74904cf1",
       "image": "data/images/honduras-tart-cherry-extract-60-capsulas-mwjh6ayu.jpg"
+    },
+    {
+      "title": "POMEGRANATE ORGANIC EXTRACT 60 Cápsulas",
+      "description": "Extracto orgánico de granada, una fuente natural de antioxidantes que complementa tu rutina de bienestar. Ideal para quienes buscan cuidar su organismo y mantener hábitos saludables.",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af893f6b05939189cca83e7",
+      "image": "data/images/honduras-pomegranate-organic-extract-60-capsulas-mwjhably.jpg"
     }
   ]
 }

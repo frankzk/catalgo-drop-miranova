@@ -679,6 +679,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af893f6b05939189cca83e7",
       "image": "data/images/honduras-pomegranate-organic-extract-60-capsulas-mwjhably.jpg"
+    },
+    {
+      "title": "SUPER HUMAN Amla Superfruit Extract 60 cápsulas",
+      "description": "Extracto orgánico de Amla, conocido como superfruta por su aporte de antioxidantes naturales. Ideal para complementar tu rutina de bienestar, vitalidad y cuidado personal.",
+      "category": "suplementos",
+      "providerPrice": 215,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af896101ec69cdc7490596e",
+      "image": "data/images/honduras-super-human-amla-superfruit-extract-60-c-mwkwzb0n.jpg"
     }
   ]
 }

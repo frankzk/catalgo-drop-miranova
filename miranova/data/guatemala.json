@@ -118,6 +118,16 @@
       "currency": "GTQ",
       "boxville": "https://app.soydrop.com/vendor/products/details/6aee63efd4e73b8adf698b11",
       "image": "data/images/guatemala-brasier-corrector-de-postura-con-refuerz-mw9qqhed.jpg"
+    },
+    {
+      "title": "SUPER HUMAN Tart Cherry Extract",
+      "description": "Extracto de cereza ácida , fuente natural de antioxidantes. Una alternativa para complementar tu rutina diaria de bienestar y acompañar un estilo de vida activo",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "GTQ",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af892b51ec69cdc74904efc",
+      "image": "data/images/guatemala-super-human-tart-cherry-extract-mwns68oo.jpg"
     }
   ]
 }

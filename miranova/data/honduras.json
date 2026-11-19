@@ -759,6 +759,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb32801ec69cdc7493c7d5",
       "image": "data/images/honduras-instinto-crema-hidratante-con-feromonas--mwnptil6.jpg"
+    },
+    {
+      "title": "SUPER HUMAN VITAL ROOTS 30 ml.",
+      "description": "Fórmula líquida que combina maca, ashwagandha, fenogreco, remolacha y L-arginina. Una combinación de ingredientes naturales diseñada para complementar tu rutina de energía, vitalidad y bienestar integral.",
+      "category": "suplementos",
+      "providerPrice": 205,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af8b345b05939189ccad792",
+      "image": "data/images/honduras-super-human-vital-roots-30-ml-mwnugq06.jpg"
     }
   ]
 }

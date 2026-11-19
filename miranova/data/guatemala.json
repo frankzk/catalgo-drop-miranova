@@ -188,6 +188,16 @@
       "currency": "GTQ",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af8af851ec69cdc7490a30f",
       "image": "data/images/guatemala-super-human-oxido-nitrico-con-huanarpo-m-mwnse3e7.jpg"
+    },
+    {
+      "title": "HEMOCALM LUBRICANTE CALMANTE 30 ml",
+      "description": "Producto de uso externo formulado con aloe vera y caléndula, ingredientes naturales reconocidos por sus propiedades suavizantes y calmantes.",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "GTQ",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb27eb1ec69cdc7493a71c",
+      "image": "data/images/guatemala-hemocalm-lubricante-calmante-30-ml-mwnshhxr.jpg"
     }
   ]
 }

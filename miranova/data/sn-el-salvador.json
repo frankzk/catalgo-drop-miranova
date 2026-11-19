@@ -209,6 +209,16 @@
       "currency": "USD",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb3bfe1ec69cdc7493e7ce",
       "image": "data/images/sn-el-salvador-rosabella-moringa-60-capsulas-mwju0nx0.jpg"
+    },
+    {
+      "title": "SUPER HUMAN Tart Cherry Extract",
+      "description": "Extracto de cereza ácida , fuente natural de antioxidantes. Una alternativa para complementar tu rutina diaria de bienestar y acompañar un estilo de vida activo",
+      "category": "suplementos",
+      "providerPrice": 8.4,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af89248b05939189cca7fb0",
+      "image": "data/images/sn-el-salvador-super-human-tart-cherry-extract-mwnqmnh4.jpg"
     }
   ]
 }

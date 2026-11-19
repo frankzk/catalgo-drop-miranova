@@ -299,6 +299,16 @@
       "currency": "USD",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb2bbbb05939189ccd9a9e",
       "image": "data/images/sn-el-salvador-volumax-crema-voluminizante-30-ml-mwnrdmp4.jpg"
+    },
+    {
+      "title": "INSTINTO Crema Hidratante con Feromonas For Mens 60 gr",
+      "description": "Crema de cuidado masculino formulada para complementar la rutina de cuidado personal. Su fórmula con feromonas está diseñada para brindar una experiencia de cuidado y bienestar.",
+      "category": "belleza",
+      "providerPrice": 8.04,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb33001ec69cdc7493ca24",
+      "image": "data/images/sn-el-salvador-instinto-crema-hidratante-con-feromonas--mwnrhdn4.jpg"
     }
   ]
 }

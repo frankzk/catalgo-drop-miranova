@@ -128,6 +128,16 @@
       "currency": "GTQ",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af892b51ec69cdc74904efc",
       "image": "data/images/guatemala-super-human-tart-cherry-extract-mwns68oo.jpg"
+    },
+    {
+      "title": "SUPER HUMAN Pomegranate Organic Extract 60 cápsulas.",
+      "description": "Extracto orgánico de granada, una fuente natural de antioxidantes que complementa tu rutina de bienestar. Ideal para quienes buscan cuidar su organismo y mantener hábitos saludables.",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "GTQ",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af894d9b05939189cca8741",
+      "image": "data/images/guatemala-super-human-pomegranate-organic-extract--mwns8npb.jpg"
     }
   ]
 }

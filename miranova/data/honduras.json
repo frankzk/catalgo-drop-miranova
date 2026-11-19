@@ -739,6 +739,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb2682b05939189ccd8a6d",
       "image": "data/images/honduras-hemocalm-lubricante-calmante-30-ml-mwnpko9d.jpg"
+    },
+    {
+      "title": "VOLUMAX Crema Voluminizante 30 ml",
+      "description": "Crema cosmética diseñada para mejorar la apariencia de volumen, firmeza y elasticidad de la piel. Su fórmula está orientada al cuidado corporal, ayudando a mantener una piel de aspecto más firme, tonificado.",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb2b311ec69cdc7493b0ea",
+      "image": "data/images/honduras-volumax-crema-voluminizante-30-ml-mwnproft.jpg"
     }
   ]
 }

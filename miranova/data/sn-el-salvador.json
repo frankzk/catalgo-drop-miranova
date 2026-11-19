@@ -289,6 +289,16 @@
       "currency": "USD",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb27021ec69cdc7493a4a3",
       "image": "data/images/sn-el-salvador-hemocalm-lubricante-calmante-30-ml-mwnr75aw.jpg"
+    },
+    {
+      "title": "VOLUMAX Crema Voluminizante 30 ml",
+      "description": "Crema cosmética diseñada para mejorar la apariencia de volumen, firmeza y elasticidad de la piel. Su fórmula está orientada al cuidado corporal, ayudando a mantener una piel de aspecto más firme, tonificado",
+      "category": "belleza",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb2bbbb05939189ccd9a9e",
+      "image": "data/images/sn-el-salvador-volumax-crema-voluminizante-30-ml-mwnrdmp4.jpg"
     }
   ]
 }

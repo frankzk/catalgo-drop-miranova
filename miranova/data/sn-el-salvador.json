@@ -259,6 +259,16 @@
       "currency": "USD",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af8a9691ec69cdc749098fb",
       "image": "data/images/sn-el-salvador-super-human-r-alpha-lipoic-acid-60-capsu-mwnqyt0p.jpg"
+    },
+    {
+      "title": "SUPER HUMAN Fermented Garlic 60 cápsulas.",
+      "description": "Extracto de ajo negro fermentado durante 90 días con Ubiquinol CoQ10. Una combinación diseñada para complementar el cuidado cardiovascular, la circulación y el bienestar energético.",
+      "category": "suplementos",
+      "providerPrice": 8.4,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af8ac69b05939189ccacc46",
+      "image": "data/images/sn-el-salvador-super-human-fermented-garlic-60-capsulas-mwnr053s.jpg"
     }
   ]
 }

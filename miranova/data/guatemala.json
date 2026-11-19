@@ -198,6 +198,16 @@
       "currency": "GTQ",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb27eb1ec69cdc7493a71c",
       "image": "data/images/guatemala-hemocalm-lubricante-calmante-30-ml-mwnshhxr.jpg"
+    },
+    {
+      "title": "VOLUMAX CREMA VOLUMINIZANTE 30 ml",
+      "description": "Crema cosmética diseñada para mejorar la apariencia de volumen, firmeza y elasticidad de la piel. Su fórmula está orientada al cuidado corporal, ayudando a mantener una piel de aspecto más firme, tonificado.",
+      "category": "belleza",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "GTQ",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb2c1b1ec69cdc7493b334",
+      "image": "data/images/guatemala-volumax-crema-voluminizante-30-ml-mwnslv1j.jpg"
     }
   ]
 }

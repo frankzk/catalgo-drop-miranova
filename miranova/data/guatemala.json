@@ -218,6 +218,16 @@
       "currency": "GTQ",
       "boxville": "https://app.soydrop.com/vendor/products/details/6afb33e3b05939189ccdb620",
       "image": "data/images/guatemala-instinto-crema-hidratante-con-feromonas--mwnsxlcn.jpg"
+    },
+    {
+      "title": "SUPER HUMAN VITAL ROOTS 30 ml.",
+      "description": "Fórmula líquida que combina maca, ashwagandha, fenogreco, remolacha y L-arginina. Una combinación de ingredientes naturales diseñada para complementar tu rutina de energía, vitalidad y bienestar integral",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "GTQ",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af8b3ebb05939189ccada27",
+      "image": "data/images/guatemala-super-human-vital-roots-30-ml-mwnul1at.jpg"
     }
   ]
 }

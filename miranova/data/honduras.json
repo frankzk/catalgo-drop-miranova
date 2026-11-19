@@ -729,6 +729,16 @@
       "currency": "HNL",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af8aed3b05939189ccacf06",
       "image": "data/images/honduras-super-human-oxido-nitrico-con-huanarpo-m-mwkzy26e.jpg"
+    },
+    {
+      "title": "HEMOCALM Lubricante Calmante 30 ml",
+      "description": "Producto de uso externo formulado con aloe vera y caléndula, ingredientes naturales reconocidos por sus propiedades suavizantes y calmantes.",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "HNL",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6afb2682b05939189ccd8a6d",
+      "image": "data/images/honduras-hemocalm-lubricante-calmante-30-ml-mwnpc1vm.jpg"
     }
   ]
 }

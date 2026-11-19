@@ -138,6 +138,16 @@
       "currency": "GTQ",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af894d9b05939189cca8741",
       "image": "data/images/guatemala-super-human-pomegranate-organic-extract--mwns8npb.jpg"
+    },
+    {
+      "title": "SUPER HUMAN Amla Superfruit Extract 60 cápsulas.",
+      "description": "Extracto orgánico de Amla, conocido como superfruta por su aporte de antioxidantes naturales. Ideal para complementar tu rutina de bienestar, vitalidad y cuidado personal.",
+      "category": "suplementos",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "GTQ",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6af8975cb05939189cca8ee6",
+      "image": "data/images/guatemala-super-human-amla-superfruit-extract-60-c-mwnsa4tj.jpg"
     }
   ]
 }

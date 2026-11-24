@@ -319,6 +319,16 @@
       "currency": "USD",
       "boxville": "https://app.soydrop.com/vendor/products/details/6af8b39b1ec69cdc7490aa3b",
       "image": "data/images/sn-el-salvador-super-human-vital-roots-30-ml-mwnujbfq.jpg"
+    },
+    {
+      "title": "Crema Tópica con Biotina 10 en 1",
+      "description": "Crema restauradora para el cuidado de la piel, formulada con biotina para ayudar a mejorar su apariencia, hidratación y suavidad.",
+      "category": "belleza",
+      "providerPrice": 2,
+      "suggestedPrice": null,
+      "currency": "USD",
+      "boxville": "https://app.soydrop.com/vendor/products/details/6b05f135b51056afbf991ec9",
+      "image": "data/images/sn-el-salvador-crema-topica-con-biotina-10-en-1-mwv529t0.jpg"
     }
   ]
 }
